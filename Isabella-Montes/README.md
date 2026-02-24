@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="public/evaluo.png" alt="Evaluo Logo" width="160"/>
+<img src="public/Evaluo.png" alt="Evaluo Logo" width="160"/>
 
 # Evaluo
 
