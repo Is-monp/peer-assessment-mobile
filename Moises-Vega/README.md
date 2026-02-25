@@ -9,16 +9,34 @@
 
 ## Composición y diseño de la solución
 Un posible enfoque sería una única aplicación móvil con dos tipos de usuario: profesor y estudiante. Esta decisión permite simplificar el desarrollo y mantener coherencia en la experiencia de uso. La diferenciación se manejaría mediante permisos según el rol, evitando duplicar funcionalidades y facilitando la integración con la plataforma de cursos existente.
-
+* Propuesta de arquitectura
+![Arquitectura](\imagenes\arquitectura.png)
 ## Descripción del flujo funcional
-Se empieza desde el lado del profesor, este inicia sesión con su cuenta institucional de Microsoft. Una vez dentro, el sistema le muestra los proyectos que ya tiene creados. Desde ahí puede crear uno nuevo configurando los datos básicos, o entrar directamente a uno existente. Para armar los equipos, simplemente sube un archivo CSV con la lista de grupos; el sistema se encarga de revisar que esté bien formateado y guarda todo en la base de datos. Luego viene la parte de configurar la coevaluación: establece las fechas de inicio y cierre, elige si será anónima o identificada, define los criterios o rúbrica y selecciona el tipo de preguntas.
-Por el lado del estudiante, el proceso es similar: entra con su cuenta Microsoft y el sistema le muestra solo los proyectos activos en los que participa, filtrando las coevaluaciones que estén abiertas en ese momento. Cuando elige una evaluación, la app detecta automáticamente a qué grupo pertenece y arma el formulario correspondiente. El estudiante va calificando a cada compañero según los criterios que definió el profesor y, al terminar, envía sus respuestas que quedan guardadas vinculadas al proyecto.
-Cuando se cierra el plazo de evaluación, el sistema procesa automáticamente toda la información y calcula las métricas por estudiante y por grupo. El profesor entra a un panel de resultados donde puede ver estadísticas resumidas, promedios y reportes individuales que le ayudan a analizar cómo fue la contribución de cada uno en el trabajo en equipo.
+Se empieza desde el lado del profesor, este inicia sesión con su cuenta institucional de Microsoft. 
+![Inicio.](\imagenes\Captura1.png)
+![Login.](\imagenes\Captura2.png)
+(Hay dos botones de siguiente debio a limitaciones del figma, no estarian en una versión real)
+
+Una vez dentro, el sistema le muestra los proyectos que ya tiene creados.
+![Menu profesor](\imagenes\Captura3.png)
+ Desde ahí puede crear uno nuevo configurando los datos básicos, o entrar directamente a uno existente. Para armar los equipos, simplemente sube un archivo CSV con la lista de grupos; el sistema se encarga de validar el formato y almacenar la información en la base de datos. Luego configura la coevaluación: establece fechas de inicio y cierre, define si será anónima o identificada, selecciona los criterios o rúbrica y el tipo de preguntas.
+
+![Pantalla inicio.](\imagenes\Captura4.png)
+
+Por el lado del estudiante, el proceso inicia también con autenticación mediante cuenta Microsoft. El sistema muestra únicamente los proyectos activos en los que participa y filtra las coevaluaciones que se encuentren dentro del período habilitado. Al seleccionar una evaluación, la aplicación identifica automáticamente el grupo al que pertenece el estudiante y genera dinámicamente el formulario correspondiente. El estudiante califica a cada integrante según los criterios definidos y envía sus respuestas, las cuales quedan almacenadas y asociadas al proyecto.
+![Pantalla Estudiante](\imagenes\Captura5.png)
+![Pantalla inicio.](\imagenes\Captura6.png)
+
+Una vez finalizado el plazo, el sistema procesa automáticamente la información y calcula métricas agregadas por estudiante y por grupo. El profesor puede acceder a un panel de resultados donde visualiza estadísticas resumidas, promedios y reportes individuales para analizar la contribución dentro del equipo.
+
+![Pantalla reviews](\imagenes\Captura7.png)
+![Resultados profesor.](\imagenes\Captura8.png)
+ De manera complementaria, el estudiante puede acceder a una sección de resultados personales donde visualiza el resumen de las evaluaciones recibidas por parte de sus compañeros, respetando la configuración de anonimato definida por el profesor.
+![Resultados estudiante.](\imagenes\Captura9.png)
 
 ## Justificación
-Reazar que eduarod me resiva en su oficina mañana lunes
+La propuesta fue validada mediante una entrevista a uno de los docentes del departamento e intercambiar correos con otro, quienes aprobaron la arquitectura de una única aplicación con dos tipos de usuario (profesor y estudiante), considerándola más adecuada que desarrollar dos apps separadas con un mismo backend, ya que simplifica la gestión y mantiene coherencia en el sistema.
 
+Los profesores señalaron que la herramienta podría ser útil para los trabajos en grupo de sus asignaturas, especialmente para identificar la contribución individual. Aquel que fue entevistado, recomendó priorizar preguntas cuantitativas y utilizar escalas tipo Likert para obtener resultados más objetivos, evitando un uso excesivo de respuestas abiertas. También consideró importante ofrecer distintos niveles de privacidad en las evaluaciones y destacó la utilidad de exportar los resultados en formato CSV, lo que facilita integrarlos a sus hojas de cálculo y sistema de notas ya existente.
 ## Figma
-
-![This is an alt text.](/image/Markdown-mark.svg "This is a sample image.")
-You may be using [Markdown Live Preview](https://markdownlivepreview.com/).
+[Link del prototipo en figma](https://www.figma.com/design/eGKpkQaAE2BKVeXSkOy4RQ/Moises_Vega_Prototipo_Movil?node-id=0-1&t=sB0vrHInuzc7SG7h-1).
