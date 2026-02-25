@@ -71,7 +71,7 @@ The UI/UX was designed in Figma with a strong emphasis on clarity, accessibility
 
 <div align="center">
 
-[![Figma](https://img.shields.io/badge/View%20in%20Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white)](https://www.figma.com/design/o8v3NtkBwXjPmkTLGS7bFJ/Evaluo?node-id=0-1&t=R4btam7UyAPkktgg-1)
+[![Figma](https://img.shields.io/badge/View%20in%20Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white)](https://www.figma.com/design/o8v3NtkBwXjPmkTLGS7bFJ/Evaluo?node-id=0-1&t=kBaasNMpaH0JJzW8-1)
 
 </div>
 
