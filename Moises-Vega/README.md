@@ -17,11 +17,13 @@ Se empieza desde el lado del profesor, este inicia sesión con su cuenta institu
 ![Inicio.](imagenes/Captura1.png)
 
 ![Login.](imagenes/Captura2.png)
+
 (Hay dos botones de siguiente debio a limitaciones del figma, no estarian en una versión real)
 
 Una vez dentro, el sistema le muestra los proyectos que ya tiene creados.
 
 ![Menu profesor](imagenes/Captura3.png)
+
  Desde ahí puede crear uno nuevo configurando los datos básicos, o entrar directamente a uno existente. Para armar los equipos, simplemente sube un archivo CSV con la lista de grupos; el sistema se encarga de validar el formato y almacenar la información en la base de datos. Luego configura la coevaluación: establece fechas de inicio y cierre, define si será anónima o identificada, selecciona los criterios o rúbrica y el tipo de preguntas.
 
 ![Pantalla inicio.](imagenes/Captura4.png)
@@ -37,7 +39,7 @@ Una vez finalizado el plazo, el sistema procesa automáticamente la información
 ![Resultados profesor.](imagenes/Captura8.png)
 
  De manera complementaria, el estudiante puede acceder a una sección de resultados personales donde visualiza el resumen de las evaluaciones recibidas por parte de sus compañeros, respetando la configuración de anonimato definida por el profesor.
- 
+
 ![Resultados estudiante.](imagenes/Captura9.png)
 
 ## Justificación
