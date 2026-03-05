@@ -1,6 +1,13 @@
-class User {
+class AuthUser {
   final String name;
   final String email;
+  final String password;
+  int? id;
 
-  User({required this.name, required this.email});
+  AuthUser({
+    required this.name,
+    required this.email,
+    required this.password,
+    this.id,
+  });
 }
