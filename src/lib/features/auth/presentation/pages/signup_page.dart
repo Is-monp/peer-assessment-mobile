@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:src/features/auth/data/models/UserController.dart';
-import 'package:src/features/auth/presentation/widgets/textFields.dart';
+import 'package:src/features/auth/presentation/widgets/text_box.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
@@ -22,6 +22,12 @@ class _SignupPageState extends State<SignupPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        iconTheme: const IconThemeData(color: Colors.white, size: 50),
+      ),
       body: Stack(
         children: [
           Container(
@@ -63,10 +69,14 @@ class _SignupPageState extends State<SignupPage> {
                     ),
                     SizedBox(height: 20),
 
-                    TextFields(
-                      nameController: nameController,
-                      emailController: emailController,
-                      passwordController: passwordController,
+                    TextBox(hintText: 'Name', controller: nameController),
+                    SizedBox(height: 20),
+                    TextBox(hintText: 'Email', controller: emailController),
+                    SizedBox(height: 20),
+                    TextBox(
+                      hintText: 'Password',
+                      controller: passwordController,
+                      obscureText: true,
                     ),
 
                     SizedBox(height: 20),
