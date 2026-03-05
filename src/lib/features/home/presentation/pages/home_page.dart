@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:src/features/home/presentation/widgets/button_home.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -50,21 +51,11 @@ class HomePage extends StatelessWidget {
                     children: [
                       SizedBox(
                         width: double.infinity,
-                        child: ElevatedButton(
+                        child: ButtonHome(
                           onPressed: () {
                             Get.toNamed("/login");
                           },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.black.withValues(
-                              alpha: 0.6,
-                            ),
-                            foregroundColor: Colors.white,
-                            padding: const EdgeInsets.symmetric(vertical: 30),
-                          ),
-                          child: Text(
-                            'Log in',
-                            style: GoogleFonts.inter(fontSize: 25),
-                          ),
+                          text: 'Log in',
                         ),
                       ),
 
@@ -72,19 +63,11 @@ class HomePage extends StatelessWidget {
 
                       SizedBox(
                         width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.black.withValues(
-                              alpha: 0.6,
-                            ),
-                            foregroundColor: Colors.white,
-                            padding: const EdgeInsets.symmetric(vertical: 30),
-                          ),
-                          child: Text(
-                            'Sign in',
-                            style: GoogleFonts.inter(fontSize: 25),
-                          ),
+                        child: ButtonHome(
+                          onPressed: () {
+                            Get.toNamed("/signin");
+                          },
+                          text: 'Sign in',
                         ),
                       ),
                     ],
