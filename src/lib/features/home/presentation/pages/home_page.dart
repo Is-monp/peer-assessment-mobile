@@ -21,6 +21,14 @@ class HomePage extends StatelessWidget {
               ),
             ),
           ),
+          BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+            child: Container(
+              color: Colors.black.withValues(
+                alpha: 0.2,
+              ), // opcional para oscurecer
+            ),
+          ),
 
           // Content
           SafeArea(
@@ -35,7 +43,7 @@ class HomePage extends StatelessWidget {
                       style: GoogleFonts.madimiOne(
                         fontSize: 80,
                         fontWeight: FontWeight.bold,
-                        color: Colors.black,
+                        color: Colors.white,
                       ),
                     ),
                   ),

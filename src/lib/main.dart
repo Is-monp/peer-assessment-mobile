@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:src/features/auth/presentation/pages/signup_page.dart';
 import 'package:src/features/home/presentation/pages/home_page.dart';
 import 'package:src/features/auth/presentation/pages/login_page.dart';
 import 'package:get/get.dart';
@@ -20,6 +21,7 @@ class MyApp extends StatelessWidget {
       getPages: [
         GetPage(name: '/', page: () => const HomePage()),
         GetPage(name: '/login', page: () => const LoginPage()),
+        GetPage(name: '/signup', page: () => const SignupPage()),
         // Aquí puedes agregar más rutas si es necesario
       ],
     );
