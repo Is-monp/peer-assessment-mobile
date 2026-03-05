@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
       getPages: [
         GetPage(name: '/', page: () => const HomePage()),
         GetPage(name: '/login', page: () => const LoginPage()),
-        GetPage(name: '/signup', page: () => const SignupPage()),
+        GetPage(name: '/signin', page: () => const SignupPage()),
         // Aquí puedes agregar más rutas si es necesario
       ],
     );

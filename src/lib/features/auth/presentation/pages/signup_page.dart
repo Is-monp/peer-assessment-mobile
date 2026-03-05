@@ -13,7 +13,7 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage> {
-  final _UserController = UserController();
+  final userController = UserController();
 
   final nameController = TextEditingController();
   final emailController = TextEditingController();
@@ -78,7 +78,7 @@ class _SignupPageState extends State<SignupPage> {
                           foregroundColor: Colors.white,
                         ),
                         onPressed: () {
-                          _UserController.testLogin(
+                          userController.testLogin(
                             nameController.text,
                             emailController.text,
                             passwordController.text,
