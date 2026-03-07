@@ -2,7 +2,7 @@ import 'dart:ui';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:src/features/home/presentation/widgets/button_home.dart';
+import 'package:src/features/Splash-Screen/presentation/widgets/button_home.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
