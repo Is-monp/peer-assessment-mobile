@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:src/features/auth/data/models/UserController.dart';
 import 'package:src/features/auth/presentation/widgets/text_box.dart';
@@ -13,7 +14,7 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage> {
-  final userController = UserController();
+  final userController = Get.find<UserController>();
 
   final nameController = TextEditingController();
   final emailController = TextEditingController();
@@ -88,9 +89,8 @@ class _SignupPageState extends State<SignupPage> {
                           foregroundColor: Colors.white,
                         ),
                         onPressed: () {
-                          userController.testLogin(
-                            nameController.text,
-                            emailController.text,
+                          userController.login(
+                            emailController.text.trim(),
                             passwordController.text,
                           );
                         },

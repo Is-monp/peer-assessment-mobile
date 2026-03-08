@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:src/features/auth/data/models/UserController.dart';
 import '../../domain/entities/evaluation.dart';
 import '../../domain/entities/course.dart';
 import '../../domain/usecases/get_active_evaluations.dart';
@@ -27,6 +28,7 @@ class HomeStudentController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    studentName.value = Get.find<UserController>().userName;
     _loadData();
   }
 
