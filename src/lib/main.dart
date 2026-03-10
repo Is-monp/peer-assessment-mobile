@@ -6,7 +6,8 @@ import 'package:src/features/auth/presentation/pages/login_page.dart';
 import 'package:src/features/home-student/presentation/pages/home_student_page.dart';
 import 'package:src/features/home-student/presentation/state_management/home_student_binding.dart';
 import 'package:get/get.dart';
-
+import 'features/home-profesor/presentation/pages/home_professor_page.dart';
+import 'features/home-profesor/presentation/state_management/home_professor_binding.dart';
 void main() {
   // register UserController as a permanent global dependency so it persists across all routes and can be retrieved with Get.find<UserController>()
   Get.put(UserController(), permanent: true);
@@ -33,6 +34,11 @@ class MyApp extends StatelessWidget {
           page: () => const HomeStudentPage(),
           binding: HomeStudentBinding(),
         ),
+        GetPage(
+          name: '/home-professor',
+          page: () => const HomeProfessorPage(),
+          binding: HomeProfessorBinding(),
+      ),
       ],
     );
   }
