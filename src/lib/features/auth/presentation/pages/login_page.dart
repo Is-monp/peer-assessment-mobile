@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:src/features/auth/data/models/UserController.dart';
 import 'package:src/features/auth/presentation/widgets/text_box.dart';
@@ -13,10 +14,26 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final userController = UserController();
+  final userController = Get.find<UserController>();
 
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+
+  void _onLogin() {
+    final success = userController.login(
+      emailController.text.trim(),
+      passwordController.text,
+    );
+    if (!success) {
+      Get.snackbar(
+        'Login failed',
+        'Invalid email or password',
+        backgroundColor: const Color(0xFF3A2016),
+        colorText: Colors.white,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,9 +57,7 @@ class _LoginPageState extends State<LoginPage> {
           BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
             child: Container(
-              color: Colors.black.withValues(
-                alpha: 0.5,
-              ), // opcional para oscurecer
+              color: Colors.black.withValues(alpha: 0.5),
             ),
           ),
           Center(
@@ -53,9 +68,9 @@ class _LoginPageState extends State<LoginPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Login",
+                      "Let's get you signed in",
                       style: GoogleFonts.madimiOne(
-                        fontSize: 50,
+                        fontSize: 30,
                         color: Colors.white,
                       ),
                     ),
@@ -66,17 +81,15 @@ class _LoginPageState extends State<LoginPage> {
                         color: Colors.white70,
                       ),
                     ),
-                    SizedBox(height: 20),
-
+                    const SizedBox(height: 20),
                     TextBox(hintText: 'Email', controller: emailController),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     TextBox(
                       hintText: 'Password',
                       controller: passwordController,
                       obscureText: true,
                     ),
-
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
@@ -84,15 +97,9 @@ class _LoginPageState extends State<LoginPage> {
                           backgroundColor: Colors.black.withValues(alpha: 0.7),
                           foregroundColor: Colors.white,
                         ),
-                        onPressed: () {
-                          userController.testLogin(
-                            "Test User",
-                            emailController.text,
-                            passwordController.text,
-                          );
-                        },
+                        onPressed: _onLogin,
                         child: Text(
-                          'Test Login',
+                          'Log in',
                           style: GoogleFonts.madimiOne(fontSize: 20),
                         ),
                       ),
