@@ -1,7 +1,7 @@
 //this is supposed to be a middle man
 
-import '../../domain/entities/evaluation.dart';
-import '../../domain/entities/course.dart';
+import '../models/evaluation_model.dart';
+import '../models/course_model.dart';
 import '../../domain/repositories/home_student_repository.dart';
 import '../datasources/home_student_datasource.dart';
 
@@ -11,12 +11,12 @@ class HomeStudentRepositoryImpl implements HomeStudentRepository {
   HomeStudentRepositoryImpl(this.dataSource);
 
   @override
-  Future<List<Evaluation>> getActiveEvaluations(String studentId) {
+  Future<List<EvaluationModel>> getActiveEvaluations(String studentId) {
     return dataSource.getActiveEvaluations(studentId);
   }
 
   @override
-  Future<List<Course>> getEnrolledCourses(String studentId) {
+  Future<List<CourseModel>> getEnrolledCourses(String studentId) {
     return dataSource.getEnrolledCourses(studentId);
   }
 }

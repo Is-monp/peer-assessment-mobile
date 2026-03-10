@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:src/features/auth/data/models/UserController.dart';
+import 'package:src/features/auth/presentation/bloc/UserController.dart';
 import '../../domain/entities/evaluation.dart';
 import '../../domain/entities/course.dart';
 import '../../domain/usecases/get_active_evaluations.dart';
@@ -40,7 +40,8 @@ class HomeStudentController extends GetxController {
     courses.assignAll(courseList);
     isLoading.value = false;
   }
-//not implemented yet butttt to have a glimpse of how it would work
+
+  //not implemented yet butttt to have a glimpse of how it would work
   void navigateToEvaluation(Evaluation evaluation) {
     Get.toNamed('/evaluation', arguments: evaluation);
   }

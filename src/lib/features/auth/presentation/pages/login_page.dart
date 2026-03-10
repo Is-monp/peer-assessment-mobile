@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:src/features/auth/data/models/UserController.dart';
+import 'package:src/features/auth/presentation/bloc/UserController.dart';
 import 'package:src/features/auth/presentation/widgets/text_box.dart';
 
 class LoginPage extends StatefulWidget {
@@ -56,9 +56,7 @@ class _LoginPageState extends State<LoginPage> {
           ),
           BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-            child: Container(
-              color: Colors.black.withValues(alpha: 0.5),
-            ),
+            child: Container(color: Colors.black.withValues(alpha: 0.5)),
           ),
           Center(
             child: SingleChildScrollView(

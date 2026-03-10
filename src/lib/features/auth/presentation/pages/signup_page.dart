@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:src/features/auth/data/models/UserController.dart';
+import 'package:src/features/auth/presentation/bloc/UserController.dart';
 import 'package:src/features/auth/presentation/widgets/text_box.dart';
 
 class SignupPage extends StatefulWidget {
