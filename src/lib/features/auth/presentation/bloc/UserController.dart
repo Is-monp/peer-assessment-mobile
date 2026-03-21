@@ -1,4 +1,7 @@
 import 'package:get/get.dart';
+import '../../domain/models/authentication_user.dart';
+
+import '../../domain/repositories/i_auth_repository.dart';
 
 //this is a hardcoded user to simulate a successful auth response
 const _kHardcodedEmail = 'student@test.com';
@@ -10,6 +13,10 @@ const _kProfessorPassword = '1234';
 const _kProfessorName = 'Josh Doe';
 
 class UserController extends GetxController {
+  final IAuthRepository authentication;
+
+  final _loggedUser = Rxn<AuthenticationUser>();
+
   final _loggedIn = false.obs;
   final _userName = ''.obs;
   final _userEmail = ''.obs;
@@ -29,14 +36,14 @@ class UserController extends GetxController {
       return true;
     }
     // check if credentials match professor
-      if (email == _kProfessorEmail && password == _kProfessorPassword) {
-    _loggedIn.value = true;
-    _userName.value = _kProfessorName;
-    _userEmail.value = email;
+    if (email == _kProfessorEmail && password == _kProfessorPassword) {
+      _loggedIn.value = true;
+      _userName.value = _kProfessorName;
+      _userEmail.value = email;
 
-    Get.toNamed('/home-professor');
-    return true;
-  }
+      Get.toNamed('/home-professor');
+      return true;
+    }
     return false;
   }
 
