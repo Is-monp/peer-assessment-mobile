@@ -1,7 +1,7 @@
 class AuthUser {
   final String name;
   final String email;
-  final String password;
+  String? password;
   int? id;
 
   AuthUser({
