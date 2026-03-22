@@ -3,7 +3,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:src/features/auth/presentation/bloc/UserController.dart';
+import 'package:loggy/loggy.dart';
+import 'package:src/features/auth/presentation/viewmodels/user_controller.dart';
 import 'package:src/features/auth/presentation/widgets/text_box.dart';
 
 class SignupPage extends StatefulWidget {
@@ -14,11 +15,54 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage> {
+  final _registerKey = GlobalKey<FormState>();
+  final _validationKey = GlobalKey<FormState>();
+
   final userController = Get.find<UserController>();
 
   final nameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+
+  bool registerPhase = true;
+
+  Future<void> _signup(
+    String theName,
+    String theEmail,
+    String thePassword,
+    bool direct,
+  ) async {
+    try {
+      await userController.signUp(theName, theEmail, thePassword, direct);
+
+      if (direct) {
+        Get.snackbar(
+          "Sign Up",
+          'User created successfully',
+          icon: const Icon(Icons.person, color: Colors.red),
+          snackPosition: SnackPosition.BOTTOM,
+        );
+        return;
+      }
+
+      setState(() => registerPhase = false);
+
+      Get.snackbar(
+        "Sign Up",
+        'User created successfully, check your email for verification',
+        icon: const Icon(Icons.person, color: Colors.red),
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    } catch (err) {
+      logError('SignUp error $err');
+      Get.snackbar(
+        "Sign Up",
+        err.toString(),
+        icon: const Icon(Icons.person, color: Colors.red),
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,9 +133,11 @@ class _SignupPageState extends State<SignupPage> {
                           foregroundColor: Colors.white,
                         ),
                         onPressed: () {
-                          userController.login(
+                          _signup(
+                            nameController.text,
                             emailController.text.trim(),
                             passwordController.text,
+                            true,
                           );
                         },
                         child: Text(
