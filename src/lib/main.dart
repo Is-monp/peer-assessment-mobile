@@ -8,6 +8,8 @@ import 'package:src/features/home-student/presentation/state_management/home_stu
 import 'package:get/get.dart';
 import 'features/home-profesor/presentation/pages/home_professor_page.dart';
 import 'features/home-profesor/presentation/state_management/home_professor_binding.dart';
+import 'features/tap-on-course/presentation/pages/tap_course_page.dart';
+import 'features/tap-on-course/presentation/state_management/tap_course_binding.dart';
 
 void main() {
   // register UserController as a permanent global dependency so it persists across all routes and can be retrieved with Get.find<UserController>()
@@ -39,6 +41,11 @@ class MyApp extends StatelessWidget {
           name: '/home-professor',
           page: () => const HomeProfessorPage(),
           binding: HomeProfessorBinding(),
+        ),
+        GetPage(
+          name: '/course-detail',
+          page: () => const TapCoursePage(),
+          binding: TapCourseBinding(),
         ),
       ],
     );
