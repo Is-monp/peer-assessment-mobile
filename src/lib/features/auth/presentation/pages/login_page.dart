@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:src/features/auth/presentation/bloc/UserController.dart';
+import 'package:src/features/auth/presentation/viewmodels/user_controller.dart';
 import 'package:src/features/auth/presentation/widgets/text_box.dart';
 
 class LoginPage extends StatefulWidget {
@@ -19,12 +19,13 @@ class _LoginPageState extends State<LoginPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
-  void _onLogin() {
-    final success = userController.login(
-      emailController.text.trim(),
-      passwordController.text,
-    );
-    if (!success) {
+  Future<void> _onLogin() async {
+    try {
+      await userController.login(
+        emailController.text.trim(),
+        passwordController.text,
+      );
+    } catch (err) {
       Get.snackbar(
         'Login failed',
         'Invalid email or password',
