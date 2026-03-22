@@ -20,6 +20,8 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'features/home-profesor/presentation/pages/home_professor_page.dart';
 import 'features/home-profesor/presentation/state_management/home_professor_binding.dart';
+import 'features/tap-on-course/presentation/pages/tap_course_page.dart';
+import 'features/tap-on-course/presentation/state_management/tap_course_binding.dart';
 
 void main() async {
   await dotenv.load(fileName: ".env");
@@ -72,6 +74,11 @@ class MyApp extends StatelessWidget {
           name: '/home-professor',
           page: () => const HomeProfessorPage(),
           binding: HomeProfessorBinding(),
+        ),
+        GetPage(
+          name: '/course-detail',
+          page: () => const TapCoursePage(),
+          binding: TapCourseBinding(),
         ),
       ],
     );

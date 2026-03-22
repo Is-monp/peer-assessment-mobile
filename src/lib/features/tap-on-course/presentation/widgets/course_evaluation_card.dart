@@ -1,0 +1,111 @@
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import '../../domain/entities/course_evaluation.dart';
+
+class CourseEvaluationCard extends StatelessWidget {
+  final CourseEvaluation evaluation;
+
+  const CourseEvaluationCard({super.key, required this.evaluation});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: const Color(0xFF231816),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            evaluation.name,
+            style: GoogleFonts.inter(
+              color: Colors.white,
+              fontSize: 15,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Row(
+            children: [
+              _StatusBadge(status: evaluation.status),
+              const SizedBox(width: 8),
+              _VisibilityBadge(visibility: evaluation.visibility),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Row(
+            children: [
+              const Icon(Icons.timer_outlined, size: 14, color: Colors.white54),
+              const SizedBox(width: 4),
+              Text(
+                '${evaluation.durationMinutes} min',
+                style: GoogleFonts.inter(color: Colors.white54, fontSize: 12),
+              ),
+              const SizedBox(width: 16),
+              const Icon(Icons.people_outline, size: 14, color: Colors.white54),
+              const SizedBox(width: 4),
+              Text(
+                '${evaluation.respondedCount} responded',
+                style: GoogleFonts.inter(color: Colors.white54, fontSize: 12),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _StatusBadge extends StatelessWidget {
+  final String status;
+
+  const _StatusBadge({required this.status});
+
+  @override
+  Widget build(BuildContext context) {
+    final isActive = status == 'active';
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      decoration: BoxDecoration(
+        color: isActive ? const Color(0xFF1E3A1E) : const Color(0xFF2A2A2A),
+        borderRadius: BorderRadius.circular(6),
+      ),
+      child: Text(
+        isActive ? 'Active' : 'Closed',
+        style: GoogleFonts.inter(
+          color: isActive ? const Color(0xFF4CAF50) : Colors.white54,
+          fontSize: 12,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+    );
+  }
+}
+
+class _VisibilityBadge extends StatelessWidget {
+  final String visibility;
+
+  const _VisibilityBadge({required this.visibility});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      decoration: BoxDecoration(
+        color: const Color(0xFF5C2A1A),
+        borderRadius: BorderRadius.circular(6),
+      ),
+      child: Text(
+        visibility == 'public' ? 'Public' : 'Private',
+        style: GoogleFonts.inter(
+          color: const Color(0xFFFF8C60),
+          fontSize: 12,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+    );
+  }
+}
