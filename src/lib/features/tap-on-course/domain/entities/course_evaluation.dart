@@ -1,12 +1,8 @@
-enum CourseEvaluationStatus { active, closed }
-
-enum CourseEvaluationVisibility { public, private }
-
 class CourseEvaluation {
   final String id;
   final String name;
-  final CourseEvaluationStatus status;
-  final CourseEvaluationVisibility visibility;
+  final String status;      // 'active' | 'closed'
+  final String visibility;  // 'public' | 'private'
   final int durationMinutes;
   final int respondedCount;
 
