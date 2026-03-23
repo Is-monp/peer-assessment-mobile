@@ -3,12 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:src/features/Splash-Screen/presentation/widgets/button_home.dart';
-<<<<<<< Updated upstream
-import 'package:src/core/navigation/navigation_service.dart'; // Navegación centralizada
-=======
 import 'package:src/features/auth/presentation/pages/login_page.dart';
 import 'package:src/features/auth/presentation/pages/signup_page.dart';
->>>>>>> Stashed changes
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -58,13 +54,7 @@ class HomePage extends StatelessWidget {
                       SizedBox(
                         width: double.infinity,
                         child: ButtonHome(
-<<<<<<< Updated upstream
-                          onPressed: () {
-                            NavigationService.toLogin();
-                          },
-=======
                           onPressed: () => Get.to(() => const LoginPage()), 
->>>>>>> Stashed changes
                           text: 'Log in',
                         ),
                       ),
@@ -72,13 +62,7 @@ class HomePage extends StatelessWidget {
                       SizedBox(
                         width: double.infinity,
                         child: ButtonHome(
-<<<<<<< Updated upstream
-                          onPressed: () {
-                            NavigationService.toSignup();
-                          },
-=======
                           onPressed: () => Get.to(() => const SignupPage()), 
->>>>>>> Stashed changes
                           text: 'Sign in',
                         ),
                       ),

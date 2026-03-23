@@ -9,18 +9,14 @@ import 'package:src/core/i_local_preferences.dart';
 import 'package:src/core/local_preferences_secured.dart';
 import 'package:src/core/local_preferences_shared.dart';
 import 'package:src/core/refresh_client.dart';
-import 'package:src/core/navigation/app_pages.dart'; 
 import 'package:src/features/auth/data/datasources/remote/authentication_source_service_roble.dart';
 import 'package:src/features/auth/data/datasources/remote/i_authentication_source.dart';
 import 'package:src/features/auth/data/repository/auth_repository.dart';
 import 'package:src/features/auth/domain/repositories/i_auth_repository.dart';
 import 'package:src/features/auth/presentation/viewmodels/user_controller.dart';
-<<<<<<< Updated upstream
-=======
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'central.dart'; // 👈
->>>>>>> Stashed changes
+import 'central.dart';
 
 void main() async {
   await dotenv.load(fileName: ".env");
@@ -59,11 +55,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-<<<<<<< Updated upstream
-      initialRoute: AppPages.initial,        getPages: AppPages.routes,       
-=======
       home: const Central(),
->>>>>>> Stashed changes
     );
   }
 }

@@ -3,21 +3,6 @@ import '../../domain/models/authentication_user.dart';
 import 'package:loggy/loggy.dart';
 import '../../domain/repositories/i_auth_repository.dart';
 
-<<<<<<< Updated upstream
-//Center cambio
-import 'package:src/core/navigation/navigation_service.dart';
-
-//this is a hardcoded user to simulate a successful auth response
-//const _kHardcodedEmail = 'sebastianotero@uninorte.edu.co';
-//const _kHardcodedPassword = 'Hola123.';
-//const _kHardcodedName = 'Sebastian Monsalve';
-//
-//const _kProfessorEmail = 'professor@test.com';
-//const _kProfessorPassword = 'Hola123';
-//const _kProfessorName = 'Josh Doe';
-
-=======
->>>>>>> Stashed changes
 class UserController extends GetxController {
   final IAuthRepository authentication;
   final logged = false.obs;
@@ -47,10 +32,6 @@ class UserController extends GetxController {
     await authentication.login(email, password);
     await getLoggedUser();
     logged.value = true;
-<<<<<<< Updated upstream
-    NavigationService.toHomeProfessor();
-=======
->>>>>>> Stashed changes
     return true;
   }
 
@@ -68,13 +49,7 @@ class UserController extends GetxController {
   Future<void> logOut() async {
     logInfo('AuthenticationController: Log Out');
     await authentication.logOut();
-<<<<<<< Updated upstream
-    logged.value = false;
-    //temporal
-    NavigationService.toLogin();
-=======
     logged.value = false; 
->>>>>>> Stashed changes
   }
 
   Future<bool> validateToken() async {

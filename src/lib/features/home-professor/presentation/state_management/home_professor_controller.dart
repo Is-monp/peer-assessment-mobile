@@ -1,12 +1,8 @@
 import 'package:get/get.dart';
 import '../../domain/entities/course.dart';
 import '../../domain/usecases/get_assigned_courses.dart';
-<<<<<<< Updated upstream:src/lib/features/home-professor/presentation/state_management/home_professor_controller.dart
-import 'package:src/core/navigation/navigation_service.dart'; //Navegacion
-=======
 import 'package:src/features/tap-on-course/presentation/pages/tap_course_page.dart';
-import 'package:src/features/tap-on-course/presentation/state_management/tap_course_binding.dart'; // 👈
->>>>>>> Stashed changes:src/lib/features/home-profesor/presentation/state_management/home_professor_controller.dart
+import 'package:src/features/tap-on-course/presentation/state_management/tap_course_binding.dart';
 
 class HomeProfessorController extends GetxController {
 
@@ -45,11 +41,7 @@ class HomeProfessorController extends GetxController {
   }
 
   void navigateToCourse(Course course) {
-<<<<<<< Updated upstream:src/lib/features/home-professor/presentation/state_management/home_professor_controller.dart
-    NavigationService.toCourseDetail(course);
-=======
     TapCourseBinding().dependencies(); 
     Get.to(() => const TapCoursePage(), arguments: course);
->>>>>>> Stashed changes:src/lib/features/home-profesor/presentation/state_management/home_professor_controller.dart
   }
 }
