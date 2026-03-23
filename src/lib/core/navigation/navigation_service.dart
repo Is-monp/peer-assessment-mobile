@@ -18,7 +18,7 @@ class NavigationService {
   }
 
   static void toLogin() {
-    Get.offAllNamed(AppRoutes.login);
+    Get.toNamed(AppRoutes.login);
   }
 
   static void toSignup() {
