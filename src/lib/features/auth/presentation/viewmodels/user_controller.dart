@@ -4,6 +4,9 @@ import 'package:loggy/loggy.dart';
 
 import '../../domain/repositories/i_auth_repository.dart';
 
+//Center cambio
+import 'package:src/core/navigation/navigation_service.dart';
+
 //this is a hardcoded user to simulate a successful auth response
 //const _kHardcodedEmail = 'sebastianotero@uninorte.edu.co';
 //const _kHardcodedPassword = 'Hola123.';
@@ -45,7 +48,7 @@ class UserController extends GetxController {
     await authentication.login(email, password);
     await getLoggedUser();
     logged.value = true;
-    Get.toNamed('/home-professor');
+    NavigationService.toHomeProfessor();
     return true;
     //if (email == _kHardcodedEmail && password == _kHardcodedPassword) {
     //  logInfo('AuthenticationController: Login $email $password');
@@ -90,7 +93,7 @@ class UserController extends GetxController {
     await authentication.logOut();
     logged.value = false;
     //temporal
-    Get.offAllNamed('/');
+    NavigationService.toLogin();
   }
 
   Future<bool> validateToken() async {

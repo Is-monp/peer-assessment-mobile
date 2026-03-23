@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import '../../domain/entities/course.dart';
 import '../../domain/usecases/get_assigned_courses.dart';
+import 'package:src/core/navigation/navigation_service.dart'; //Navegacion
 
 class HomeProfessorController extends GetxController {
 
@@ -50,7 +51,7 @@ class HomeProfessorController extends GetxController {
   }
 
   void navigateToCourse(Course course) {
-    Get.toNamed('/course-detail', arguments: course);
+    NavigationService.toCourseDetail(course);
   }
 
 }

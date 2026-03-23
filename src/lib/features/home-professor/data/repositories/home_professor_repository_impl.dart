@@ -1,4 +1,4 @@
-import '../../data/models/course_model.dart';
+import '../models/course_model.dart';
 import '../../domain/repositories/home_professor_repository.dart';
 import '../datasources/home_professor_datasource.dart';
 

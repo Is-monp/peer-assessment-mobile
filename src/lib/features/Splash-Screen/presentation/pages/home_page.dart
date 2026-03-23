@@ -1,8 +1,8 @@
 import 'dart:ui';
-import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:src/features/Splash-Screen/presentation/widgets/button_home.dart';
+import 'package:src/core/navigation/navigation_service.dart'; // Navegación centralizada
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -61,7 +61,7 @@ class HomePage extends StatelessWidget {
                         width: double.infinity,
                         child: ButtonHome(
                           onPressed: () {
-                            Get.toNamed("/login");
+                            NavigationService.toLogin();
                           },
                           text: 'Log in',
                         ),
@@ -73,7 +73,7 @@ class HomePage extends StatelessWidget {
                         width: double.infinity,
                         child: ButtonHome(
                           onPressed: () {
-                            Get.toNamed("/signin");
+                            NavigationService.toSignup();
                           },
                           text: 'Sign in',
                         ),

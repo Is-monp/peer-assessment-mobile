@@ -4,6 +4,7 @@ import '../../domain/entities/evaluation.dart';
 import '../../domain/entities/course.dart';
 import '../../domain/usecases/get_active_evaluations.dart';
 import '../../domain/usecases/get_enrolled_courses.dart';
+import 'package:src/core/navigation/navigation_service.dart'; //Navegacion centralizada
 
 class HomeStudentController extends GetxController {
   final GetActiveEvaluations getActiveEvaluations;
@@ -43,11 +44,13 @@ class HomeStudentController extends GetxController {
   }
 
   //not implemented yet butttt to have a glimpse of how it would work
+  // implementar cuando exista la página de evaluación
   void navigateToEvaluation(Evaluation evaluation) {
-    Get.toNamed('/evaluation', arguments: evaluation);
+  //   NavigationService.toEvaluation(evaluation);
   }
 
+  // implementar cuando exista la página de curso para estudiante
   void navigateToCourse(Course course) {
-    Get.toNamed('/course', arguments: course);
+  //   NavigationService.toCourse(course);
   }
 }
