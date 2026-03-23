@@ -1,8 +1,14 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:src/features/Splash-Screen/presentation/widgets/button_home.dart';
+<<<<<<< Updated upstream
 import 'package:src/core/navigation/navigation_service.dart'; // Navegación centralizada
+=======
+import 'package:src/features/auth/presentation/pages/login_page.dart';
+import 'package:src/features/auth/presentation/pages/signup_page.dart';
+>>>>>>> Stashed changes
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -12,7 +18,6 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
-          // Background
           Container(
             decoration: const BoxDecoration(
               image: DecorationImage(
@@ -24,18 +29,13 @@ class HomePage extends StatelessWidget {
           BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
             child: Container(
-              color: Colors.black.withValues(
-                alpha: 0.2,
-              ), // opcional para oscurecer
+              color: Colors.black.withValues(alpha: 0.2),
             ),
           ),
-
-          // Content
           SafeArea(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                /// 🔹 Texto centrado verticalmente
                 Expanded(
                   child: Center(
                     child: Text(
@@ -48,8 +48,6 @@ class HomePage extends StatelessWidget {
                     ),
                   ),
                 ),
-
-                /// 🔹 Botones abajo
                 Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 24,
@@ -60,21 +58,27 @@ class HomePage extends StatelessWidget {
                       SizedBox(
                         width: double.infinity,
                         child: ButtonHome(
+<<<<<<< Updated upstream
                           onPressed: () {
                             NavigationService.toLogin();
                           },
+=======
+                          onPressed: () => Get.to(() => const LoginPage()), 
+>>>>>>> Stashed changes
                           text: 'Log in',
                         ),
                       ),
-
                       const SizedBox(height: 40),
-
                       SizedBox(
                         width: double.infinity,
                         child: ButtonHome(
+<<<<<<< Updated upstream
                           onPressed: () {
                             NavigationService.toSignup();
                           },
+=======
+                          onPressed: () => Get.to(() => const SignupPage()), 
+>>>>>>> Stashed changes
                           text: 'Sign in',
                         ),
                       ),

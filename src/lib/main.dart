@@ -15,6 +15,12 @@ import 'package:src/features/auth/data/datasources/remote/i_authentication_sourc
 import 'package:src/features/auth/data/repository/auth_repository.dart';
 import 'package:src/features/auth/domain/repositories/i_auth_repository.dart';
 import 'package:src/features/auth/presentation/viewmodels/user_controller.dart';
+<<<<<<< Updated upstream
+=======
+import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+import 'central.dart'; // 👈
+>>>>>>> Stashed changes
 
 void main() async {
   await dotenv.load(fileName: ".env");
@@ -53,7 +59,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
+<<<<<<< Updated upstream
       initialRoute: AppPages.initial,        getPages: AppPages.routes,       
+=======
+      home: const Central(),
+>>>>>>> Stashed changes
     );
   }
 }

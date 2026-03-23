@@ -43,14 +43,24 @@ class HomeStudentController extends GetxController {
     isLoading.value = false;
   }
 
+<<<<<<< Updated upstream
   //not implemented yet butttt to have a glimpse of how it would work
   // implementar cuando exista la página de evaluación
   void navigateToEvaluation(Evaluation evaluation) {
   //   NavigationService.toEvaluation(evaluation);
+=======
+  // not implemented yet — páginas pendientes de crear
+  void navigateToEvaluation(Evaluation evaluation) {
+    // Get.to(() => const EvaluationPage(), arguments: evaluation);
+>>>>>>> Stashed changes
   }
 
   // implementar cuando exista la página de curso para estudiante
   void navigateToCourse(Course course) {
+<<<<<<< Updated upstream
   //   NavigationService.toCourse(course);
+=======
+    // Get.to(() => const CourseStudentPage(), arguments: course);
+>>>>>>> Stashed changes
   }
 }
