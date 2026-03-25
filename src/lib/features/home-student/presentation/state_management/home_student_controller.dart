@@ -42,12 +42,13 @@ class HomeStudentController extends GetxController {
     isLoading.value = false;
   }
 
-  //not implemented yet butttt to have a glimpse of how it would work
+  // not implemented yet — páginas pendientes de crear
   void navigateToEvaluation(Evaluation evaluation) {
-    Get.toNamed('/evaluation', arguments: evaluation);
+    // Get.to(() => const EvaluationPage(), arguments: evaluation);
   }
 
+  // implementar cuando exista la página de curso para estudiante
   void navigateToCourse(Course course) {
-    Get.toNamed('/course', arguments: course);
+    // Get.to(() => const CourseStudentPage(), arguments: course);
   }
 }
