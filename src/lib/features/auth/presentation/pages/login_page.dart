@@ -16,8 +16,10 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final userController = Get.find<UserController>();
 
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
+  final emailController = TextEditingController(
+    text: "augustosalazar@uninorte.edu.co",
+  );
+  final passwordController = TextEditingController(text: "ThePassword!1.");
 
   Future<void> _onLogin() async {
     try {
