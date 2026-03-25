@@ -7,6 +7,7 @@ class UserController extends GetxController {
   final IAuthRepository authentication;
   final logged = false.obs;
   final _loggedUser = Rxn<AuthenticationUser>();
+  final isStudent = true.obs;
   final RxBool isLoading = false.obs;
 
   UserController(this.authentication);
@@ -35,7 +36,12 @@ class UserController extends GetxController {
     return true;
   }
 
-  Future<bool> signUp(String name, String email, String password, bool direct) async {
+  Future<bool> signUp(
+    String name,
+    String email,
+    String password,
+    bool direct,
+  ) async {
     logInfo('AuthenticationController: Sign Up $email $password');
     await authentication.signUp(email, password, name, direct);
     return true;
@@ -49,7 +55,7 @@ class UserController extends GetxController {
   Future<void> logOut() async {
     logInfo('AuthenticationController: Log Out');
     await authentication.logOut();
-    logged.value = false; 
+    logged.value = false;
   }
 
   Future<bool> validateToken() async {
@@ -71,7 +77,9 @@ class UserController extends GetxController {
     isLoading.value = true;
     var rta = await authentication.getLoggedUser();
     _loggedUser.value = rta;
+    isStudent.value = rta.student;
     isLoading.value = false;
+
     return rta;
   }
 
