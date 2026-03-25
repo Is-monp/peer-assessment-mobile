@@ -16,6 +16,10 @@ import 'package:src/features/auth/domain/repositories/i_auth_repository.dart';
 import 'package:src/features/auth/presentation/viewmodels/user_controller.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:src/features/home-professor/data/datasources/home_professor_datasource.dart';
+import 'package:src/features/home-professor/data/repositories/home_professor_repository_impl.dart';
+import 'package:src/features/home-professor/data/datasources/remote_home_professor_datasource.dart';
+import 'package:src/features/home-professor/domain/repositories/home_professor_repository.dart';
 import 'central.dart';
 
 void main() async {
@@ -37,6 +41,14 @@ void main() async {
     RefreshClient(http.Client(), Get.find<IAuthenticationSource>()),
     tag: 'apiClient',
     permanent: true,
+  );
+
+  Get.lazyPut<HomeProfessorDataSource>(
+    () =>
+        RemoteHomeProfessorDataSource(Get.find<http.Client>(tag: 'apiClient')),
+  );
+  Get.lazyPut<HomeProfessorRepository>(
+    () => HomeProfessorRepositoryImpl(Get.find()),
   );
 
   Get.put<IAuthRepository>(AuthRepository(Get.find()));

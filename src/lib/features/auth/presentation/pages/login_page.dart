@@ -25,6 +25,7 @@ class _LoginPageState extends State<LoginPage> {
         emailController.text.trim(),
         passwordController.text,
       );
+      Get.until((route) => route.isFirst);
     } catch (err) {
       Get.snackbar(
         'Login failed',

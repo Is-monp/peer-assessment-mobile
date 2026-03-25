@@ -1,22 +1,22 @@
 import 'package:get/get.dart';
+import 'package:loggy/loggy.dart';
+import 'package:src/core/i_local_preferences.dart';
 import '../../domain/entities/course.dart';
 import '../../domain/usecases/get_assigned_courses.dart';
 import 'package:src/features/tap-on-course/presentation/pages/tap_course_page.dart';
 import 'package:src/features/tap-on-course/presentation/state_management/tap_course_binding.dart';
 
 class HomeProfessorController extends GetxController {
-
   final GetAssignedCourses getAssignedCourses;
 
-  HomeProfessorController({
-    required this.getAssignedCourses
-  });
+  HomeProfessorController({required this.getAssignedCourses});
 
-  final RxString professorName = "Josh Doe".obs;
+  final RxString professorName = "default user".obs;
   final RxList<Course> courses = <Course>[].obs;
   final RxInt coursesCount = 0.obs;
   final RxInt studentsCount = 0.obs;
   final RxInt activeEvaluations = 0.obs;
+  final ILocalPreferences sharedPreferences = Get.find();
 
   String get professorInitials {
     final parts = professorName.value.split(" ");
@@ -30,18 +30,36 @@ class HomeProfessorController extends GetxController {
   void onInit() {
     super.onInit();
     loadCourses();
+    loadUserData();
+  }
+
+  Future<void> loadUserData() async {
+    final userName = await sharedPreferences.getString('userName');
+
+    if (userName != null) {
+      professorName.value = userName;
+    }
   }
 
   Future<void> loadCourses() async {
-    final result = await getAssignedCourses("prof-1");
+    final userId = await sharedPreferences.getString('userId');
+    if (userId == null) {
+      logError("userId is null");
+      return;
+    }
+    final result = await getAssignedCourses(userId);
+
     courses.assignAll(result);
     coursesCount.value = courses.length;
     studentsCount.value = courses.fold(0, (sum, c) => sum + c.studentsCount);
-    activeEvaluations.value = courses.fold(0, (sum, c) => sum + c.activeEvaluations);
+    activeEvaluations.value = courses.fold(
+      0,
+      (sum, c) => sum + c.activeEvaluations,
+    );
   }
 
   void navigateToCourse(Course course) {
-    TapCourseBinding().dependencies(); 
+    TapCourseBinding().dependencies();
     Get.to(() => const TapCoursePage(), arguments: course);
   }
 }
