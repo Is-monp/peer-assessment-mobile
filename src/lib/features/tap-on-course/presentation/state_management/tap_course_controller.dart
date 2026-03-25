@@ -66,7 +66,7 @@ class TapCourseController extends GetxController {
 
     final csvContent = String.fromCharCodes(result.files.single.bytes!);
 
-    final imported = await importGroupsFromCsv(csvContent);
+  final imported = await importGroupsFromCsv(csvContent, course.id); 
 
     // Avoid duplicating a category that was already imported
     for (final newCat in imported) {

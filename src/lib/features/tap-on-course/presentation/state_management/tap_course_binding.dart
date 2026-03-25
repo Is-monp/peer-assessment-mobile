@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 import '../../data/datasources/tap_course_datasource.dart';
+import '../../data/datasources/remote_tap_course_datasource.dart';
 import '../../data/parsers/csv_group_parser.dart';
 import '../../data/repositories/tap_course_repository_impl.dart';
 import '../../domain/repositories/tap_course_repository.dart';
@@ -11,11 +13,14 @@ import 'tap_course_controller.dart';
 class TapCourseBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<TapCourseDatasource>(
-      () => TapCourseDatasourceMock(),
-    );
-
     Get.lazyPut(() => CsvGroupParser());
+
+    Get.lazyPut<TapCourseDatasource>(
+      () => RemoteTapCourseDatasource(
+        Get.find<http.Client>(tag: 'apiClient'), 
+        Get.find(),
+      ),
+    );
 
     Get.lazyPut<TapCourseRepository>(
       () => TapCourseRepositoryImpl(
