@@ -1,8 +1,10 @@
 import 'dart:ui';
-import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:src/features/Splash-Screen/presentation/widgets/button_home.dart';
+import 'package:src/features/auth/presentation/pages/login_page.dart';
+import 'package:src/features/auth/presentation/pages/signup_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -12,7 +14,6 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
-          // Background
           Container(
             decoration: const BoxDecoration(
               image: DecorationImage(
@@ -24,18 +25,13 @@ class HomePage extends StatelessWidget {
           BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
             child: Container(
-              color: Colors.black.withValues(
-                alpha: 0.2,
-              ), // opcional para oscurecer
+              color: Colors.black.withValues(alpha: 0.2),
             ),
           ),
-
-          // Content
           SafeArea(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                /// 🔹 Texto centrado verticalmente
                 Expanded(
                   child: Center(
                     child: Text(
@@ -48,8 +44,6 @@ class HomePage extends StatelessWidget {
                     ),
                   ),
                 ),
-
-                /// 🔹 Botones abajo
                 Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 24,
@@ -60,21 +54,15 @@ class HomePage extends StatelessWidget {
                       SizedBox(
                         width: double.infinity,
                         child: ButtonHome(
-                          onPressed: () {
-                            Get.toNamed("/login");
-                          },
+                          onPressed: () => Get.to(() => const LoginPage()), 
                           text: 'Log in',
                         ),
                       ),
-
                       const SizedBox(height: 40),
-
                       SizedBox(
                         width: double.infinity,
                         child: ButtonHome(
-                          onPressed: () {
-                            Get.toNamed("/signin");
-                          },
+                          onPressed: () => Get.to(() => const SignupPage()), 
                           text: 'Sign in',
                         ),
                       ),

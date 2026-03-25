@@ -1,4 +1,6 @@
-import '../../data/models/course_model.dart';
+import 'package:src/features/home-professor/domain/entities/course.dart';
+
+import '../models/course_model.dart';
 import '../../domain/repositories/home_professor_repository.dart';
 import '../datasources/home_professor_datasource.dart';
 
@@ -8,7 +10,7 @@ class HomeProfessorRepositoryImpl implements HomeProfessorRepository {
   HomeProfessorRepositoryImpl(this.datasource);
 
   @override
-  Future<List<CourseModel>> getAssignedCourses(String professorId) {
+  Future<List<Course>> getAssignedCourses(String professorId) {
     return datasource.getAssignedCourses(professorId);
   }
 }

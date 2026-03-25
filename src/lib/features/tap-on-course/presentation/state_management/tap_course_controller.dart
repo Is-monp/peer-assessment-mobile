@@ -6,7 +6,7 @@ import '../../domain/entities/group_category.dart';
 import '../../domain/usecases/get_course_evaluations.dart';
 import '../../domain/usecases/get_course_groups.dart';
 import '../../domain/usecases/import_groups_from_csv.dart';
-import 'package:src/features/home-profesor/domain/entities/course.dart';
+import 'package:src/features/home-professor/domain/entities/course.dart';
 
 class TapCourseController extends GetxController {
   final GetCourseEvaluations getCourseEvaluations;

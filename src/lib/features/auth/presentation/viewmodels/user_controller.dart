@@ -1,17 +1,7 @@
 import 'package:get/get.dart';
 import '../../domain/models/authentication_user.dart';
 import 'package:loggy/loggy.dart';
-
 import '../../domain/repositories/i_auth_repository.dart';
-
-//this is a hardcoded user to simulate a successful auth response
-//const _kHardcodedEmail = 'sebastianotero@uninorte.edu.co';
-//const _kHardcodedPassword = 'Hola123.';
-//const _kHardcodedName = 'Sebastian Monsalve';
-//
-//const _kProfessorEmail = 'professor@test.com';
-//const _kProfessorPassword = 'Hola123';
-//const _kProfessorName = 'Josh Doe';
 
 class UserController extends GetxController {
   final IAuthRepository authentication;
@@ -28,6 +18,7 @@ class UserController extends GetxController {
   }
 
   bool get isLoggedIn => logged.value;
+  bool get isLogged => logged.value;
 
   @override
   Future<void> onInit() async {
@@ -36,43 +27,15 @@ class UserController extends GetxController {
     logged.value = await validateToken();
   }
 
-  bool get isLogged => logged.value;
-
-  /// returns true and navigates to /home-student if credentials match or eturns false otherwise
   Future<bool> login(String email, String password) async {
-    // check if credentials match student
     logInfo('AuthenticationController: Login $email $password');
     await authentication.login(email, password);
     await getLoggedUser();
     logged.value = true;
-    Get.toNamed('/home-professor');
     return true;
-    //if (email == _kHardcodedEmail && password == _kHardcodedPassword) {
-    //  logInfo('AuthenticationController: Login $email $password');
-    //  await authentication.login(email, password);
-    //  await getLoggedUser();
-    //  logged.value = true;
-    //  Get.toNamed('/home-student');
-    //  return true;
-    //}
-    // check if credentials match professor
-    //if (email == _kProfessorEmail && password == _kProfessorPassword) {
-    //  logged.value = true;
-    //  _userName.value = _kProfessorName;
-    //  _userEmail.value = email;
-    //
-    //  Get.toNamed('/home-professor');
-    //  return true;
-    //}
-    //return false;
   }
 
-  Future<bool> signUp(
-    String name,
-    String email,
-    String password,
-    bool direct,
-  ) async {
+  Future<bool> signUp(String name, String email, String password, bool direct) async {
     logInfo('AuthenticationController: Sign Up $email $password');
     await authentication.signUp(email, password, name, direct);
     return true;
@@ -80,17 +43,13 @@ class UserController extends GetxController {
 
   Future<bool> validate(String email, String validationCode) async {
     logInfo('Controller Validate $email $validationCode');
-    var rta = await authentication.validate(email, validationCode);
-    return rta;
+    return await authentication.validate(email, validationCode);
   }
 
   Future<void> logOut() async {
     logInfo('AuthenticationController: Log Out');
-    logged.value = false;
     await authentication.logOut();
-    logged.value = false;
-    //temporal
-    Get.offAllNamed('/');
+    logged.value = false; 
   }
 
   Future<bool> validateToken() async {
@@ -118,7 +77,6 @@ class UserController extends GetxController {
 
   Future<List<AuthenticationUser>> getUsers() async {
     logInfo('AuthenticationController: Get Users');
-    var rta = await authentication.getUsers();
-    return rta;
+    return await authentication.getUsers();
   }
 }
