@@ -25,7 +25,7 @@ class Course {
   );
 
   Map<String, dynamic> toJson() => {
-    "_id": id ?? "0",
+    "_id": id, //id es string entonces nunca puede ser null, así que esa parte nunca se ejecuta.
     "code": code,
     "name": name,
     "period": period,
