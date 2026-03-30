@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:src/features/auth/presentation/viewmodels/user_controller.dart';
 import '../state_management/home_professor_controller.dart';
 import '../widgets/course_card.dart';
 
@@ -10,6 +11,7 @@ class HomeProfessorPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<HomeProfessorController>();
+    final UserController userController = Get.find();
 
     return Scaffold(
       backgroundColor: const Color(0xFF15100E),
@@ -21,88 +23,115 @@ class HomeProfessorPage extends StatelessWidget {
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
         child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _ProfessorHeader(
+              controller: controller,
+              userController: userController,
+            ),
 
-              _ProfessorHeader(controller: controller),
+            const SizedBox(height: 8),
 
-              const SizedBox(height: 8),
+            const _ProfessorBadge(),
 
-              const _ProfessorBadge(),
+            const SizedBox(height: 28),
 
-              const SizedBox(height: 28),
+            _ProfessorStats(controller: controller),
 
-              _ProfessorStats(controller: controller),
+            const SizedBox(height: 28),
 
-              const SizedBox(height: 28),
+            _ProfessorCourses(controller: controller),
 
-              _ProfessorCourses(controller: controller),
-
-              const SizedBox(height: 24),
-
-            ],
-          ),
-        )
-    );  
+            const SizedBox(height: 24),
+          ],
+        ),
+      ),
+    );
   }
 }
 
 class _ProfessorHeader extends StatelessWidget {
   final HomeProfessorController controller;
+  final UserController userController;
 
-  const _ProfessorHeader({required this.controller});
+  const _ProfessorHeader({
+    required this.controller,
+    required this.userController,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-
               Text(
                 'Hello,',
-                style: GoogleFonts.inter(
-                  color: Colors.white60,
-                  fontSize: 16,
-                ),
+                style: GoogleFonts.inter(color: Colors.white60, fontSize: 16),
               ),
 
-              Obx(() => Text(
-                controller.professorName.value,
-                style: GoogleFonts.inter(
-                  color: Colors.white,
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
+              Obx(
+                () => Text(
+                  controller.professorName.value,
+                  style: GoogleFonts.inter(
+                    color: Colors.white,
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              )),
-
+              ),
             ],
           ),
         ),
 
-        Obx(() => Container(
-          width: 44,
-          height: 44,
-          decoration: const BoxDecoration(
-            color: Color(0xFF4A2B1F),
-            shape: BoxShape.circle,
-          ),
-          child: Center(
-            child: Text(
-              controller.professorInitials,
-              style: GoogleFonts.inter(
-                color: Colors.white,
-                fontSize: 15,
-                fontWeight: FontWeight.bold,
+        Obx(
+          () => PopupMenuButton<String>(
+            onSelected: (value) async {
+              if (value == 'logout') {
+                await userController.logOut();
+                // onSignOut();
+                // onSignOut();  función esqueleto
+              }
+            },
+            offset: const Offset(0, 50), // para que salga debajo
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            itemBuilder: (context) => [
+              PopupMenuItem(
+                value: 'logout',
+                child: Row(
+                  children: const [
+                    Icon(Icons.logout, color: Colors.red),
+                    SizedBox(width: 10),
+                    Text("Sign out"),
+                  ],
+                ),
+              ),
+            ],
+            child: Container(
+              width: 44,
+              height: 44,
+              decoration: const BoxDecoration(
+                color: Color(0xFF4A2B1F),
+                shape: BoxShape.circle,
+              ),
+              child: Center(
+                child: Text(
+                  controller.professorInitials,
+                  style: GoogleFonts.inter(
+                    color: Colors.white,
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
             ),
           ),
-        )),
-
+        ),
       ],
     );
   }
@@ -122,7 +151,6 @@ class _ProfessorBadge extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-
           const Icon(Icons.school_outlined, color: Colors.white70, size: 14),
 
           const SizedBox(width: 4),
@@ -135,7 +163,6 @@ class _ProfessorBadge extends StatelessWidget {
               fontWeight: FontWeight.w500,
             ),
           ),
-
         ],
       ),
     );
@@ -151,26 +178,15 @@ class _ProfessorStats extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-
-        _StatCard(
-          label: "Courses",
-          value: controller.coursesCount,
-        ),
+        _StatCard(label: "Courses", value: controller.coursesCount),
 
         const SizedBox(width: 10),
 
-        _StatCard(
-          label: "Students",
-          value: controller.studentsCount,
-        ),
+        _StatCard(label: "Students", value: controller.studentsCount),
 
         const SizedBox(width: 10),
 
-        _StatCard(
-          label: "Active",
-          value: controller.activeEvaluations,
-        ),
-
+        _StatCard(label: "Active", value: controller.activeEvaluations),
       ],
     );
   }
@@ -180,10 +196,7 @@ class _StatCard extends StatelessWidget {
   final String label;
   final RxInt value;
 
-  const _StatCard({
-    required this.label,
-    required this.value,
-  });
+  const _StatCard({required this.label, required this.value});
 
   @override
   Widget build(BuildContext context) {
@@ -197,26 +210,23 @@ class _StatCard extends StatelessWidget {
         ),
         child: Column(
           children: [
-
-            Obx(() => Text(
-              value.value.toString(),
-              style: GoogleFonts.inter(
-                color: const Color(0xFFFF8C60),
-                fontSize: 26,
-                fontWeight: FontWeight.bold,
+            Obx(
+              () => Text(
+                value.value.toString(),
+                style: GoogleFonts.inter(
+                  color: const Color(0xFFFF8C60),
+                  fontSize: 26,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            )),
+            ),
 
             const SizedBox(height: 4),
 
             Text(
               label,
-              style: GoogleFonts.inter(
-                color: Colors.white54,
-                fontSize: 13,
-              ),
+              style: GoogleFonts.inter(color: Colors.white54, fontSize: 13),
             ),
-
           ],
         ),
       ),
@@ -234,11 +244,9 @@ class _ProfessorCourses extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-
             Text(
               'My Courses',
               style: GoogleFonts.inter(
@@ -248,28 +256,29 @@ class _ProfessorCourses extends StatelessWidget {
               ),
             ),
 
-            Obx(() => Text(
-              '${controller.courses.length} total',
-              style: GoogleFonts.inter(
-                color: Colors.white54,
-                fontSize: 13,
+            Obx(
+              () => Text(
+                '${controller.courses.length} total',
+                style: GoogleFonts.inter(color: Colors.white54, fontSize: 13),
               ),
-            )),
-
+            ),
           ],
         ),
 
         const SizedBox(height: 14),
 
-        Obx(() => Column(
-          children: controller.courses
-              .map((course) => CourseCard(
+        Obx(
+          () => Column(
+            children: controller.courses
+                .map(
+                  (course) => CourseCard(
                     course: course,
                     onTap: () => controller.navigateToCourse(course),
-                  ))
-              .toList(),
-        )),
-
+                  ),
+                )
+                .toList(),
+          ),
+        ),
       ],
     );
   }

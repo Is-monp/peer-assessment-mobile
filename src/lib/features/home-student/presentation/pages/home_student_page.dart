@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:src/features/auth/presentation/viewmodels/user_controller.dart';
 import '../state_management/home_student_controller.dart';
 import '../widgets/evaluation_card.dart';
 import '../widgets/course_card.dart';
@@ -11,6 +12,7 @@ class HomeStudentPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<HomeStudentController>();
+    final UserController userController = Get.find();
 
     return Scaffold(
       backgroundColor: const Color(0xFF15100E),
@@ -30,7 +32,10 @@ class HomeStudentPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _StudentHeader(controller: controller),
+              _StudentHeader(
+                controller: controller,
+                userController: userController,
+              ),
               const SizedBox(height: 8),
               _RoleBadge(),
               const SizedBox(height: 28),
@@ -48,8 +53,12 @@ class HomeStudentPage extends StatelessWidget {
 
 class _StudentHeader extends StatelessWidget {
   final HomeStudentController controller;
+  final UserController userController;
 
-  const _StudentHeader({required this.controller});
+  const _StudentHeader({
+    required this.controller,
+    required this.userController,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -62,10 +71,7 @@ class _StudentHeader extends StatelessWidget {
             children: [
               Text(
                 'Hello,',
-                style: GoogleFonts.inter(
-                  color: Colors.white60,
-                  fontSize: 16,
-                ),
+                style: GoogleFonts.inter(color: Colors.white60, fontSize: 16),
               ),
               Obx(
                 () => Text(
@@ -81,20 +87,45 @@ class _StudentHeader extends StatelessWidget {
           ),
         ),
         Obx(
-          () => Container(
-            width: 44,
-            height: 44,
-            decoration: BoxDecoration(
-              color: const Color(0xFF4A2B1F),
-              shape: BoxShape.circle,
+          () => PopupMenuButton<String>(
+            onSelected: (value) async {
+              if (value == 'logout') {
+                await userController.logOut();
+                // onSignOut();
+                // onSignOut();  función esqueleto
+              }
+            },
+            offset: const Offset(0, 50), // para que salga debajo
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
             ),
-            child: Center(
-              child: Text(
-                controller.studentInitials,
-                style: GoogleFonts.inter(
-                  color: Colors.white,
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold,
+            itemBuilder: (context) => [
+              PopupMenuItem(
+                value: 'logout',
+                child: Row(
+                  children: const [
+                    Icon(Icons.logout, color: Colors.red),
+                    SizedBox(width: 10),
+                    Text("Sign out"),
+                  ],
+                ),
+              ),
+            ],
+            child: Container(
+              width: 44,
+              height: 44,
+              decoration: const BoxDecoration(
+                color: Color(0xFF4A2B1F),
+                shape: BoxShape.circle,
+              ),
+              child: Center(
+                child: Text(
+                  controller.studentInitials,
+                  style: GoogleFonts.inter(
+                    color: Colors.white,
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ),
@@ -218,10 +249,7 @@ class _MyCoursesSection extends StatelessWidget {
             Obx(
               () => Text(
                 '${controller.courses.length} enrolled',
-                style: GoogleFonts.inter(
-                  color: Colors.white54,
-                  fontSize: 13,
-                ),
+                style: GoogleFonts.inter(color: Colors.white54, fontSize: 13),
               ),
             ),
           ],
