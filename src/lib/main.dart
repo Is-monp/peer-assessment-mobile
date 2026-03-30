@@ -14,8 +14,6 @@ import 'package:src/features/auth/data/datasources/remote/i_authentication_sourc
 import 'package:src/features/auth/data/repository/auth_repository.dart';
 import 'package:src/features/auth/domain/repositories/i_auth_repository.dart';
 import 'package:src/features/auth/presentation/viewmodels/user_controller.dart';
-import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
 import 'package:src/features/home-professor/data/datasources/home_professor_datasource.dart';
 import 'package:src/features/home-professor/data/repositories/home_professor_repository_impl.dart';
 import 'package:src/features/home-professor/data/datasources/remote_home_professor_datasource.dart';

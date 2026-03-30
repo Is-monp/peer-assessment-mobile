@@ -25,7 +25,7 @@ class Course {
   );
 
   Map<String, dynamic> toJson() => {
-    "_id": id ?? "0",
+    "_id": id,
     "code": code,
     "name": name,
     "period": period,

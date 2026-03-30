@@ -15,8 +15,8 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage> {
-  final _registerKey = GlobalKey<FormState>();
-  final _validationKey = GlobalKey<FormState>();
+  //final _registerKey = GlobalKey<FormState>();
+  //final _validationKey = GlobalKey<FormState>();
 
   final userController = Get.find<UserController>();
 

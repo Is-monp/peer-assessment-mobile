@@ -5,7 +5,6 @@ import 'package:http/http.dart' as http;
 import 'package:loggy/loggy.dart';
 import 'package:src/core/i_local_preferences.dart';
 import 'package:src/features/home-professor/data/datasources/home_professor_datasource.dart';
-import 'package:src/features/home-professor/data/models/course_model.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:src/features/home-professor/domain/entities/course.dart';
 
@@ -70,7 +69,7 @@ class RemoteHomeProfessorDataSource implements HomeProfessorDataSource {
       logError("Got error code ${response.statusCode}");
       return Future.error('Error code ${response.statusCode}');
     }
-    print(courses);
+    //print(courses);
 
     return Future.value(courses);
   }

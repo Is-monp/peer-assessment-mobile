@@ -1,6 +1,4 @@
 import 'package:src/features/home-professor/domain/entities/course.dart';
-
-import '../models/course_model.dart';
 import '../../domain/repositories/home_professor_repository.dart';
 import '../datasources/home_professor_datasource.dart';
 
