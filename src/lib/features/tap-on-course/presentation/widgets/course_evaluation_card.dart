@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../domain/entities/course_evaluation.dart';
+import 'package:src/features/tap-on-course/domain/entities/course_evaluation.dart';
 
 class CourseEvaluationCard extends StatelessWidget {
   final CourseEvaluation evaluation;
@@ -38,17 +38,10 @@ class CourseEvaluationCard extends StatelessWidget {
           const SizedBox(height: 12),
           Row(
             children: [
-              const Icon(Icons.timer_outlined, size: 14, color: Colors.white54),
+              const Icon(Icons.calendar_today_outlined, size: 14, color: Colors.white54),
               const SizedBox(width: 4),
               Text(
-                '${evaluation.durationMinutes} min',
-                style: GoogleFonts.inter(color: Colors.white54, fontSize: 12),
-              ),
-              const SizedBox(width: 16),
-              const Icon(Icons.people_outline, size: 14, color: Colors.white54),
-              const SizedBox(width: 4),
-              Text(
-                '${evaluation.respondedCount} responded',
+                _formatDeadline(evaluation.deadline),
                 style: GoogleFonts.inter(color: Colors.white54, fontSize: 12),
               ),
             ],
@@ -57,6 +50,17 @@ class CourseEvaluationCard extends StatelessWidget {
       ),
     );
   }
+}
+
+String _formatDeadline(DateTime dt) {
+  const months = [
+    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+  ];
+  final hour = dt.hour % 12 == 0 ? 12 : dt.hour % 12;
+  final minute = dt.minute.toString().padLeft(2, '0');
+  final period = dt.hour < 12 ? 'AM' : 'PM';
+  return '${months[dt.month - 1]} ${dt.day}, ${dt.year} · $hour:$minute $period';
 }
 
 class _StatusBadge extends StatelessWidget {

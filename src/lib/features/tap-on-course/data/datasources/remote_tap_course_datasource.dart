@@ -26,8 +26,20 @@ class RemoteTapCourseDatasource implements TapCourseDatasource {
 
   @override
   Future<List<CourseEvaluationModel>> getCourseEvaluations(String courseId) async {
-    // TODO: implementar cuando exista la tabla en el back
-    return [];
+    final uri = Uri.https(baseUrl, '/database/$contract/read', {
+      'tableName': 'evaluations',
+      'course_id': courseId,
+    });
+
+    final response = await httpClient.get(uri, headers: _headers);
+
+    if (response.statusCode != 200) {
+      logError('getCourseEvaluations error ${response.statusCode}: ${response.body}');
+      return Future.error('Error fetching evaluations: ${response.statusCode}');
+    }
+
+    final List<dynamic> json = jsonDecode(response.body);
+    return json.map((e) => CourseEvaluationModel.fromJson(e as Map<String, dynamic>)).toList();
   }
 
   @override

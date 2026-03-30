@@ -7,6 +7,8 @@ import '../../domain/usecases/get_course_evaluations.dart';
 import '../../domain/usecases/get_course_groups.dart';
 import '../../domain/usecases/import_groups_from_csv.dart';
 import 'package:src/features/auth/presentation/viewmodels/user_controller.dart';
+import 'package:src/features/create-eval/presentation/pages/create_evaluation_page.dart';
+import 'package:src/features/create-eval/presentation/state_management/create_evaluation_binding.dart';
 import '../models/course_ui.dart';
 
 class TapCourseController extends GetxController {
@@ -91,14 +93,18 @@ class TapCourseController extends GetxController {
     );
   }
 
-  void onCreateEvaluationTapped() {
-    Get.snackbar(
-      'Coming soon',
-      'Create evaluation will be available in the next release.',
-      backgroundColor: const Color(0xFF3A2016),
-      colorText: const Color(0xFFFF8C60),
-      snackPosition: SnackPosition.BOTTOM,
-      margin: const EdgeInsets.all(16),
+  Future<void> onCreateEvaluationTapped() async {
+    CreateEvaluationBinding().dependencies();
+    final created = await Get.to(
+      () => const CreateEvaluationPage(),
+      arguments: {
+        'course': course,
+        'groupCategories': groupCategories.toList(),
+      },
     );
+    if (created == true) {
+      final evals = await getCourseEvaluations(course.id);
+      evaluations.assignAll(evals);
+    }
   }
 }
