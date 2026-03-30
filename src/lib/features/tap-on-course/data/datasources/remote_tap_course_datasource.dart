@@ -105,16 +105,31 @@ class RemoteTapCourseDatasource implements TapCourseDatasource {
   ) async {
     final categories = csvParser.parse(csvContent);
 
-    for (final category in categories) {
-      await _insertGroupCategory(
-        courseId: courseId,
-        name: category.name,
-      );
+    // Fetch category names already stored for this course
+    final existingUri = Uri.https(baseUrl, '/database/$contract/read', {
+      'tableName': 'group_categories',
+      'course_id': courseId,
+    });
+    final existingResponse = await httpClient.get(existingUri, headers: _headers);
+
+    final Set<String> existingNames = {};
+    if (existingResponse.statusCode == 200) {
+      final List<dynamic> existing = jsonDecode(existingResponse.body);
+      existingNames.addAll(existing.map((e) => e['name'] as String));
     }
 
-    await _insertGrupitos(categories: categories);
+    // Only keep categories that are not yet in the db
+    final newCategories = categories.where((c) => !existingNames.contains(c.name)).toList();
 
-    return categories;
+    if (newCategories.isEmpty) return [];
+
+    for (final category in newCategories) {
+      await _insertGroupCategory(courseId: courseId, name: category.name);
+    }
+
+    await _insertGrupitos(categories: newCategories);
+
+    return newCategories;
   }
 
   Future<void> _insertGroupCategory({
