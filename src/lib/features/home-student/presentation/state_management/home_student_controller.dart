@@ -1,5 +1,10 @@
 import 'package:get/get.dart';
+import 'package:loggy/loggy.dart';
+import 'package:src/core/i_local_preferences.dart';
 import 'package:src/features/auth/presentation/viewmodels/user_controller.dart';
+import 'package:src/features/tap-on-course/presentation/models/course_ui.dart';
+import 'package:src/features/tap-on-course/presentation/state_management/tap_course_binding.dart';
+import 'package:src/features/tap-on-course/presentation/pages/tap_course_page.dart';
 import '../../domain/entities/evaluation.dart';
 import '../../domain/entities/course.dart';
 import '../../domain/usecases/get_active_evaluations.dart';
@@ -18,6 +23,7 @@ class HomeStudentController extends GetxController {
   final RxList<Course> courses = <Course>[].obs;
   final RxBool isLoading = true.obs;
   final RxString studentName = 'Theo James'.obs;
+  final ILocalPreferences sharedPreferences = Get.find();
 
   String get studentInitials {
     final parts = studentName.value.trim().split(' ');
@@ -35,8 +41,23 @@ class HomeStudentController extends GetxController {
 
   Future<void> _loadData() async {
     isLoading.value = true;
-    final evals = await getActiveEvaluations('student-1');
-    final courseList = await getEnrolledCourses('student-1');
+
+    final userId = await sharedPreferences.getString('userId');
+    if (userId == null) {
+      logError("userId is null");
+      isLoading.value = false;
+      return;
+    }
+
+    final studentEmail = Get.find<UserController>().loggedUser?.email;
+    if (studentEmail == null) {
+      logError("student email is null");
+      isLoading.value = false;
+      return;
+    }
+
+    final evals = await getActiveEvaluations(userId);
+    final courseList = await getEnrolledCourses(studentEmail);
     evaluations.assignAll(evals);
     courses.assignAll(courseList);
     isLoading.value = false;
@@ -47,8 +68,18 @@ class HomeStudentController extends GetxController {
     // Get.to(() => const EvaluationPage(), arguments: evaluation);
   }
 
-  // implementar cuando exista la página de curso para estudiante
   void navigateToCourse(Course course) {
-    // Get.to(() => const CourseStudentPage(), arguments: course);
+    TapCourseBinding().dependencies();
+    Get.to(
+      () => const TapCoursePage(),
+      arguments: CourseUI(
+        id: course.id,
+        code: course.code,
+        name: course.name,
+        period: course.period,
+        studentsCount: 0,
+        activeEvaluations: course.activeEvaluations,
+      ),
+    );
   }
 }

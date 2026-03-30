@@ -5,6 +5,7 @@ import '../../domain/entities/course.dart';
 import '../../domain/usecases/get_assigned_courses.dart';
 import 'package:src/features/tap-on-course/presentation/pages/tap_course_page.dart';
 import 'package:src/features/tap-on-course/presentation/state_management/tap_course_binding.dart';
+import 'package:src/features/tap-on-course/presentation/models/course_ui.dart';
 
 class HomeProfessorController extends GetxController {
   final GetAssignedCourses getAssignedCourses;
@@ -60,6 +61,16 @@ class HomeProfessorController extends GetxController {
 
   void navigateToCourse(Course course) {
     TapCourseBinding().dependencies();
-    Get.to(() => const TapCoursePage(), arguments: course);
+    Get.to(
+      () => const TapCoursePage(),
+      arguments: CourseUI(
+        id: course.id,
+        code: course.code,
+        name: course.name,
+        period: course.period,
+        studentsCount: course.studentsCount,
+        activeEvaluations: course.activeEvaluations,
+      ),
+    );
   }
 }

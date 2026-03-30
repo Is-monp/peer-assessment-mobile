@@ -18,6 +18,10 @@ import 'package:src/features/home-professor/data/datasources/home_professor_data
 import 'package:src/features/home-professor/data/repositories/home_professor_repository_impl.dart';
 import 'package:src/features/home-professor/data/datasources/remote_home_professor_datasource.dart';
 import 'package:src/features/home-professor/domain/repositories/home_professor_repository.dart';
+import 'package:src/features/home-student/data/datasources/home_student_datasource.dart';
+import 'package:src/features/home-student/data/datasources/remote_home_student_datasource.dart';
+import 'package:src/features/home-student/data/repositories/home_student_repository_impl.dart';
+import 'package:src/features/home-student/domain/repositories/home_student_repository.dart';
 import 'central.dart';
 
 void main() async {
@@ -47,6 +51,14 @@ void main() async {
   );
   Get.lazyPut<HomeProfessorRepository>(
     () => HomeProfessorRepositoryImpl(Get.find()),
+  );
+
+  Get.lazyPut<HomeStudentDataSource>(
+    () =>
+        RemoteHomeStudentDataSource(Get.find<http.Client>(tag: 'apiClient')),
+  );
+  Get.lazyPut<HomeStudentRepository>(
+    () => HomeStudentRepositoryImpl(Get.find()),
   );
 
   Get.put<IAuthRepository>(AuthRepository(Get.find()));

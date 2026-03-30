@@ -11,11 +11,11 @@ class CourseModel extends Course {
 
   factory CourseModel.fromJson(Map<String, dynamic> json) {
     return CourseModel(
-      id: json['id'] as String,
-      code: json['code'] as String,
-      name: json['name'] as String,
-      period: json['period'] as String,
-      activeEvaluations: json['activeEvaluations'] as int,
+      id: json['_id'],
+      code: json['code'] ?? '---',
+      name: json['name'] ?? '---',
+      period: json['period'] ?? '---',
+      activeEvaluations: json['activeEvaluations'] ?? 0,
     );
   }
 

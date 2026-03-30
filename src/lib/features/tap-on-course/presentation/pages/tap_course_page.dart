@@ -29,7 +29,7 @@ class TapCoursePage extends StatelessWidget {
             Expanded(
               child: _TabContent(controller: controller),
             ),
-            _BottomAction(controller: controller),
+            if (controller.isProfessor) _BottomAction(controller: controller),
           ],
         );
       }),
@@ -122,13 +122,15 @@ class _CourseInfoCard extends StatelessWidget {
           const SizedBox(height: 10),
           Obx(() => Row(
             children: [
-              const Icon(Icons.people_outline, size: 14, color: Colors.white54),
-              const SizedBox(width: 4),
-              Text(
-                '${controller.course.studentsCount} Students',
-                style: GoogleFonts.inter(color: Colors.white54, fontSize: 12),
-              ),
-              const SizedBox(width: 16),
+              if (controller.isProfessor) ...[
+                const Icon(Icons.people_outline, size: 14, color: Colors.white54),
+                const SizedBox(width: 4),
+                Text(
+                  '${controller.course.studentsCount} Students',
+                  style: GoogleFonts.inter(color: Colors.white54, fontSize: 12),
+                ),
+                const SizedBox(width: 16),
+              ],
               const Icon(Icons.folder_outlined, size: 14, color: Colors.white54),
               const SizedBox(width: 4),
               Text(

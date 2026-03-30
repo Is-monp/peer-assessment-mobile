@@ -6,7 +6,8 @@ import '../../domain/entities/group_category.dart';
 import '../../domain/usecases/get_course_evaluations.dart';
 import '../../domain/usecases/get_course_groups.dart';
 import '../../domain/usecases/import_groups_from_csv.dart';
-import 'package:src/features/home-professor/domain/entities/course.dart';
+import 'package:src/features/auth/presentation/viewmodels/user_controller.dart';
+import '../models/course_ui.dart';
 
 class TapCourseController extends GetxController {
   final GetCourseEvaluations getCourseEvaluations;
@@ -19,7 +20,8 @@ class TapCourseController extends GetxController {
     required this.importGroupsFromCsv,
   });
 
-  late final Course course;
+  late final CourseUI course;
+  late final bool isProfessor;
 
   final RxInt selectedTab = 0.obs;
   final RxBool isLoading = true.obs;
@@ -36,7 +38,8 @@ class TapCourseController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    course = Get.arguments as Course;
+    isProfessor = !Get.find<UserController>().isStudent.value;
+    course = Get.arguments as CourseUI;
     _loadData();
   }
 
