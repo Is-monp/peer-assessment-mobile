@@ -235,13 +235,26 @@ class _TimeWindowRow extends StatelessWidget {
                     Theme(data: ThemeData.dark(), child: child!),
               );
               if (picked != null) {
-                ctrl.setDeadline(DateTime(
+                final candidate = DateTime(
                   dt.year,
                   dt.month,
                   dt.day,
                   picked.hour,
                   picked.minute,
-                ));
+                );
+                if (candidate.isBefore(DateTime.now())) {
+                  Get.snackbar(
+                    'Invalid time',
+                    'The deadline cannot be in the past.',
+                    backgroundColor: const Color(0xFF3A2016),
+                    colorText: const Color(0xFFFF8C60),
+                    snackPosition: SnackPosition.BOTTOM,
+                    margin: const EdgeInsets.all(16),
+                    duration: const Duration(seconds: 2),
+                  );
+                } else {
+                  ctrl.setDeadline(candidate);
+                }
               }
             },
           ),
