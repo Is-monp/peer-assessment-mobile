@@ -103,7 +103,7 @@ class RemoteHomeStudentDataSource implements HomeStudentDataSource {
   }
 
   @override
-  Future<List<EvaluationModel>> getActiveEvaluations(String studentEmail) async {
+  Future<List<EvaluationModel>> getActiveEvaluations(String studentEmail, Set<String> submittedIds) async {
     final ILocalPreferences prefs = Get.find();
     final token = await prefs.getString('token');
     final headers = {'Authorization': 'Bearer $token'};
@@ -157,7 +157,10 @@ class RemoteHomeStudentDataSource implements HomeStudentDataSource {
       final rows = evals.cast<Map<String, dynamic>>();
       await _closeExpiredEvaluations(rows, headers);
       // after closing, exclude the ones that just expired
-      final stillActive = rows.where((e) => e['status'] == 'active').toList();
+      final stillActive = rows
+          .where((e) => e['status'] == 'active')
+          .where((e) => !submittedIds.contains(e['_id']?.toString()))
+          .toList();
       if (stillActive.isEmpty) continue;
 
       final courseUri = Uri.https(baseUrl, '/database/$contract/read', {
@@ -212,4 +215,5 @@ class RemoteHomeStudentDataSource implements HomeStudentDataSource {
       }
     }
   }
+
 }
