@@ -43,6 +43,8 @@ class HomeStudentController extends GetxController {
     _loadData();
   }
 
+  Future<void> refreshData() => _loadData();
+
   Future<void> _loadData() async {
     isLoading.value = true;
 
@@ -61,9 +63,9 @@ class HomeStudentController extends GetxController {
     isLoading.value = false;
   }
 
-  void navigateToEvaluation(Evaluation evaluation) {
+  Future<void> navigateToEvaluation(Evaluation evaluation) async {
     EvalFormBinding().dependencies();
-    Get.to(
+    await Get.to(
       () => const EvalFormPage(),
       arguments: {
         'evaluation': CourseEvaluation(
@@ -77,6 +79,7 @@ class HomeStudentController extends GetxController {
         'courseName': evaluation.courseName,
       },
     );
+    await _loadData();
   }
 
   void navigateToCourse(Course course) {
