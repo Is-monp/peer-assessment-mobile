@@ -5,21 +5,26 @@ import '../../domain/entities/course_evaluation.dart';
 import '../../domain/entities/group_category.dart';
 import '../../domain/usecases/get_course_evaluations.dart';
 import '../../domain/usecases/get_course_groups.dart';
+import 'package:src/features/eval-form/domain/usecases/get_submitted_evaluation_ids.dart';
 import '../../domain/usecases/import_groups_from_csv.dart';
 import 'package:src/features/auth/presentation/viewmodels/user_controller.dart';
 import 'package:src/features/create-eval/presentation/pages/create_evaluation_page.dart';
 import 'package:src/features/create-eval/presentation/state_management/create_evaluation_binding.dart';
+import 'package:src/features/eval-form/presentation/pages/eval_form_page.dart';
+import 'package:src/features/eval-form/presentation/state_management/eval_form_binding.dart';
 import '../models/course_ui.dart';
 
 class TapCourseController extends GetxController {
   final GetCourseEvaluations getCourseEvaluations;
   final GetCourseGroups getCourseGroups;
   final ImportGroupsFromCsv importGroupsFromCsv;
+  final GetSubmittedEvaluationIds getSubmittedEvaluationIds;
 
   TapCourseController({
     required this.getCourseEvaluations,
     required this.getCourseGroups,
     required this.importGroupsFromCsv,
+    required this.getSubmittedEvaluationIds,
   });
 
   late final CourseUI course;
@@ -31,6 +36,9 @@ class TapCourseController extends GetxController {
 
   final RxList<CourseEvaluation> evaluations = <CourseEvaluation>[].obs;
   final RxList<GroupCategory> groupCategories = <GroupCategory>[].obs;
+  final Set<String> _submittedIds = {};
+
+  bool isSubmitted(String evaluationId) => _submittedIds.contains(evaluationId);
 
   // Enrollment code derived from course data (mocked)
   String get enrollmentCode => 'DS-${course.period.split('-')[0]}-xka';
@@ -51,6 +59,12 @@ class TapCourseController extends GetxController {
     final groups = await getCourseGroups(course.id);
     evaluations.assignAll(evals);
     groupCategories.assignAll(groups);
+    if (!isProfessor) {
+      final studentEmail =
+          Get.find<UserController>().loggedUser?.email ?? '';
+      final ids = await getSubmittedEvaluationIds(studentEmail);
+      _submittedIds.addAll(ids);
+    }
     isLoading.value = false;
   }
 
@@ -91,6 +105,21 @@ class TapCourseController extends GetxController {
       snackPosition: SnackPosition.BOTTOM,
       margin: const EdgeInsets.all(16),
     );
+  }
+
+  void onEvaluateTapped(CourseEvaluation evaluation) {
+    EvalFormBinding().dependencies();
+    Get.to(
+      () => const EvalFormPage(),
+      arguments: {
+        'evaluation': evaluation,
+        'courseName': course.name,
+      },
+    );
+  }
+
+  void onViewResultsTapped(CourseEvaluation evaluation) {
+    // TODO: navigate to results page
   }
 
   Future<void> onCreateEvaluationTapped() async {

@@ -6,7 +6,7 @@ class GetActiveEvaluations {
 
   GetActiveEvaluations(this.repository);
 
-  Future<List<Evaluation>> call(String studentId) {
-    return repository.getActiveEvaluations(studentId);
+  Future<List<Evaluation>> call(String studentId, Set<String> submittedIds) {
+    return repository.getActiveEvaluations(studentId, submittedIds);
   }
 }

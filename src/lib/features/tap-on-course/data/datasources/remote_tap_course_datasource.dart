@@ -39,12 +39,44 @@ class RemoteTapCourseDatasource implements TapCourseDatasource {
     }
 
     final List<dynamic> json = jsonDecode(response.body);
-    return json.map((e) => CourseEvaluationModel.fromJson(e as Map<String, dynamic>)).toList();
+    final rows = json.cast<Map<String, dynamic>>();
+    await _closeExpiredEvaluations(rows);
+    return rows.map(CourseEvaluationModel.fromJson).toList();
+  }
+
+  Future<void> _closeExpiredEvaluations(List<Map<String, dynamic>> rows) async {
+    final now = DateTime.now();
+    for (final row in rows) {
+      if (row['status'] != 'active') continue;
+      final deadline = DateTime.tryParse(row['deadline'] as String? ?? '');
+      if (deadline == null || deadline.isAfter(now)) continue;
+
+      final id = row['_id']?.toString();
+      if (id == null) continue;
+
+      final uri = Uri.https(baseUrl, '/database/$contract/update');
+      final response = await httpClient.put(
+        uri,
+        headers: _headers,
+        body: jsonEncode({
+          'tableName': 'evaluations',
+          'idColumn': '_id',
+          'idValue': id,
+          'updates': {'status': 'closed'},
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        row['status'] = 'closed';
+      } else {
+        logError('_closeExpiredEvaluations error ${response.statusCode}: ${response.body}');
+      }
+    }
   }
 
   @override
   Future<List<GroupCategoryModel>> getCourseGroups(String courseId) async {
-    // 1. GET group_categories filtrando por course_id
+    // GET group_categories filtrando por course_id
     final categoriesUri = Uri.https(baseUrl, '/database/$contract/read', {
       'tableName': 'group_categories',
       'course_id': courseId,
@@ -59,7 +91,7 @@ class RemoteTapCourseDatasource implements TapCourseDatasource {
 
     final List<dynamic> categoriesJson = jsonDecode(categoriesResponse.body);
 
-    // 2. Por cada categoría → GET grupitos filtrando por GroupCategory
+    // Por cada categoría a GET grupitos filtrando por GroupCategory
     final List<GroupCategoryModel> result = [];
 
     for (final categoryJson in categoriesJson) {
@@ -79,7 +111,7 @@ class RemoteTapCourseDatasource implements TapCourseDatasource {
 
       final List<dynamic> rows = jsonDecode(grupitosResponse.body);
 
-      // 3. Agrupar filas por Groupname
+      // Agrupar filas por Groupname
       final Map<String, List<dynamic>> byGroup = {};
       for (final row in rows) {
         final groupName = row['Groupname'] as String;

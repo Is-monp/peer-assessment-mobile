@@ -19,7 +19,7 @@ class CourseEvaluationModel {
 
   factory CourseEvaluationModel.fromJson(Map<String, dynamic> json) =>
       CourseEvaluationModel(
-        id: json['id'].toString(),
+        id: json['_id'].toString(),
         name: json['name'] as String,
         status: json['status'] as String,
         visibility: json['visibility'] as String,

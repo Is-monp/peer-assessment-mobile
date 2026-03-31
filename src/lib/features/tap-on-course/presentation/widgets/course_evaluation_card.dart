@@ -4,11 +4,21 @@ import 'package:src/features/tap-on-course/domain/entities/course_evaluation.dar
 
 class CourseEvaluationCard extends StatelessWidget {
   final CourseEvaluation evaluation;
+  final VoidCallback? onEvaluate;
+  final VoidCallback? onViewResults;
 
-  const CourseEvaluationCard({super.key, required this.evaluation});
+  const CourseEvaluationCard({
+    super.key,
+    required this.evaluation,
+    this.onEvaluate,
+    this.onViewResults,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final isActive = evaluation.status == 'active';
+    final showCta = onEvaluate != null || onViewResults != null;
+
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
@@ -46,6 +56,22 @@ class CourseEvaluationCard extends StatelessWidget {
               ),
             ],
           ),
+          if (showCta) ...[
+            const SizedBox(height: 12),
+            const Divider(color: Colors.white12, height: 1),
+            const SizedBox(height: 12),
+            GestureDetector(
+              onTap: onEvaluate ?? onViewResults,
+              child: Text(
+                onEvaluate != null ? 'Evaluate now →' : 'View results →',
+                style: GoogleFonts.inter(
+                  color: const Color(0xFFFF8C60),
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ],
         ],
       ),
     );
