@@ -24,9 +24,7 @@ class HomePage extends StatelessWidget {
           ),
           BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-            child: Container(
-              color: Colors.black.withValues(alpha: 0.2),
-            ),
+            child: Container(color: Colors.black.withValues(alpha: 0.2)),
           ),
           SafeArea(
             child: Column(
@@ -54,7 +52,9 @@ class HomePage extends StatelessWidget {
                       SizedBox(
                         width: double.infinity,
                         child: ButtonHome(
-                          onPressed: () => Get.to(() => const LoginPage()), 
+                          onPressed: () => Get.to(
+                            () => const LoginPage(key: Key('LoginPage')),
+                          ),
                           text: 'Log in',
                         ),
                       ),
@@ -62,7 +62,9 @@ class HomePage extends StatelessWidget {
                       SizedBox(
                         width: double.infinity,
                         child: ButtonHome(
-                          onPressed: () => Get.to(() => const SignupPage()), 
+                          onPressed: () => Get.to(
+                            () => const SignupPage(key: Key('SignupPage')),
+                          ),
                           text: 'Sign in',
                         ),
                       ),

@@ -7,24 +7,47 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get/get_common/get_reset.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_instance/src/extension_instance.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:src/features/auth/presentation/pages/login_page.dart';
+import 'package:src/features/auth/presentation/viewmodels/user_controller.dart';
 
 import 'package:src/main.dart';
 
+import 'mockUserController.dart';
+
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  setUp(() {
+    Get.reset();
+    Get.put<UserController>(FakeUserController());
+  });
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+  Widget createWidget() {
+    return const GetMaterialApp(
+      home: LoginPage(key: Key('LoginPage'), showBackground: false),
+    );
+  }
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+  testWidgets('Widget login validación @ email', (WidgetTester tester) async {
+    await tester.pumpWidget(createWidget());
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    expect(find.byKey(const Key('LoginPage')), findsOneWidget);
+
+    await tester.enterText(
+      find.byKey(const Key('TextFormFieldLoginEmail')),
+      'a.com',
+    );
+
+    await tester.enterText(
+      find.byKey(const Key('TextFormFieldLoginPassword')),
+      '123456',
+    );
+
+    await tester.tap(find.byKey(const Key('ButtonLoginSubmit')));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Enter valid email address'), findsOneWidget);
   });
 }

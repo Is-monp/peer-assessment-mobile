@@ -114,14 +114,43 @@ class _SignupPageState extends State<SignupPage> {
                     ),
                     SizedBox(height: 20),
 
-                    TextBox(hintText: 'Name', controller: nameController),
-                    SizedBox(height: 20),
-                    TextBox(hintText: 'Email', controller: emailController),
+                    TextBox(
+                      key: const Key('TextFormFieldSignupName'),
+                      hintText: 'Name',
+                      controller: nameController,
+                      validatorFunc: () => (value) {
+                        if (value!.isEmpty) {
+                          return "Enter name";
+                        }
+                      },
+                    ),
                     SizedBox(height: 20),
                     TextBox(
+                      key: const Key('TextFormFieldSignupEmail'),
+                      hintText: 'Email',
+                      controller: emailController,
+                      validatorFunc: () => (value) {
+                        if (value!.isEmpty) {
+                          return "Enter email";
+                        } else if (!value.contains('@')) {
+                          return "Enter valid email address";
+                        }
+                      },
+                    ),
+                    SizedBox(height: 20),
+                    TextBox(
+                      key: const Key('TextFormFieldSignupPassword'),
                       hintText: 'Password',
                       controller: passwordController,
                       obscureText: true,
+                      validatorFunc: () => (value) {
+                        if (value!.isEmpty) {
+                          return "Enter password";
+                        } else if (value.length < 8) {
+                          return "Password should have at least 8 characters";
+                        }
+                        return null;
+                      },
                     ),
 
                     SizedBox(height: 20),
@@ -141,7 +170,7 @@ class _SignupPageState extends State<SignupPage> {
                           );
                         },
                         child: Text(
-                          'Test Login',
+                          'Sign up',
                           style: GoogleFonts.madimiOne(fontSize: 20),
                         ),
                       ),
