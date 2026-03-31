@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 import 'package:loggy/loggy.dart';
-import 'package:src/core/i_local_preferences.dart';
 import 'package:src/features/auth/presentation/viewmodels/user_controller.dart';
 import 'package:src/features/tap-on-course/presentation/models/course_ui.dart';
 import 'package:src/features/tap-on-course/presentation/state_management/tap_course_binding.dart';
@@ -23,7 +22,6 @@ class HomeStudentController extends GetxController {
   final RxList<Course> courses = <Course>[].obs;
   final RxBool isLoading = true.obs;
   final RxString studentName = 'Theo James'.obs;
-  final ILocalPreferences sharedPreferences = Get.find();
 
   String get studentInitials {
     final parts = studentName.value.trim().split(' ');
@@ -42,13 +40,6 @@ class HomeStudentController extends GetxController {
   Future<void> _loadData() async {
     isLoading.value = true;
 
-    final userId = await sharedPreferences.getString('userId');
-    if (userId == null) {
-      logError("userId is null");
-      isLoading.value = false;
-      return;
-    }
-
     final studentEmail = Get.find<UserController>().loggedUser?.email;
     if (studentEmail == null) {
       logError("student email is null");
@@ -56,7 +47,7 @@ class HomeStudentController extends GetxController {
       return;
     }
 
-    final evals = await getActiveEvaluations(userId);
+    final evals = await getActiveEvaluations(studentEmail);
     final courseList = await getEnrolledCourses(studentEmail);
     evaluations.assignAll(evals);
     courses.assignAll(courseList);

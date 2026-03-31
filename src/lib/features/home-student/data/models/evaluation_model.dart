@@ -10,26 +10,26 @@ class EvaluationModel extends Evaluation {
     required super.timeRemaining,
   });
 
-  factory EvaluationModel.fromJson(Map<String, dynamic> json) {
+  factory EvaluationModel.fromDbJson(
+    Map<String, dynamic> evalJson,
+    Map<String, dynamic> courseJson,
+  ) {
+    final deadline = DateTime.parse(evalJson['deadline'] as String);
     return EvaluationModel(
-      id: json['id'] as String,
-      courseCode: json['courseCode'] as String,
-      title: json['title'] as String,
-      courseName: json['courseName'] as String,
-      status: EvaluationStatus.values.firstWhere(
-        (e) => e.name == json['status'],
-        orElse: () => EvaluationStatus.pending,
-      ),
-      timeRemaining: json['timeRemaining'] as String,
+      id: evalJson['_id'].toString(),
+      courseCode: courseJson['code'] as String? ?? '---',
+      title: evalJson['name'] as String,
+      courseName: courseJson['name'] as String? ?? '---',
+      status: EvaluationStatus.open,
+      timeRemaining: _computeTimeRemaining(deadline),
     );
   }
 
-  Map<String, dynamic> toJson() => {
-    'id': id,
-    'courseCode': courseCode,
-    'title': title,
-    'courseName': courseName,
-    'status': status.name,
-    'timeRemaining': timeRemaining,
-  };
+  static String _computeTimeRemaining(DateTime deadline) {
+    final diff = deadline.difference(DateTime.now());
+    if (diff.isNegative) return 'Ended';
+    if (diff.inDays >= 1) return '${diff.inDays}d left';
+    if (diff.inHours >= 1) return '${diff.inHours}h left';
+    return '${diff.inMinutes}m left';
+  }
 }

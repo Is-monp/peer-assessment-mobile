@@ -301,7 +301,11 @@ class _EvaluationsTab extends StatelessWidget {
       return ListView.builder(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         itemCount: controller.evaluations.length,
-        itemBuilder: (_, i) => CourseEvaluationCard(evaluation: controller.evaluations[i]),
+        itemBuilder: (_, i) => CourseEvaluationCard(
+          evaluation: controller.evaluations[i],
+          onEvaluate: controller.isProfessor ? null : () => controller.onEvaluateTapped(controller.evaluations[i]),
+          onViewResults: controller.isProfessor ? null : () => controller.onViewResultsTapped(controller.evaluations[i]),
+        ),
       );
     });
   }

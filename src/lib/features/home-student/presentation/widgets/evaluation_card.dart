@@ -71,7 +71,9 @@ class EvaluationCard extends StatelessWidget {
                 ),
               ),
               child: Text(
-                'Tap to evaluate  \u2192',
+                evaluation.status == EvaluationStatus.closed
+                    ? 'View results →'
+                    : 'Evaluate now →',
                 style: GoogleFonts.inter(fontSize: 14),
               ),
             ),

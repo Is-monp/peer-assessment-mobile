@@ -93,6 +93,14 @@ class TapCourseController extends GetxController {
     );
   }
 
+  void onEvaluateTapped(CourseEvaluation evaluation) {
+    // TODO: navigate to student evaluation form
+  }
+
+  void onViewResultsTapped(CourseEvaluation evaluation) {
+    // TODO: navigate to results page
+  }
+
   Future<void> onCreateEvaluationTapped() async {
     CreateEvaluationBinding().dependencies();
     final created = await Get.to(
