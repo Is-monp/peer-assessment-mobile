@@ -23,21 +23,25 @@ class _LoginPageState extends State<LoginPage> {
   );
   final passwordController = TextEditingController(text: "ThePassword!1.");
 
-  Future<void> _onLogin() async {
+  Future<bool> _onLogin() async {
     try {
       await userController.login(
         emailController.text.trim(),
         passwordController.text,
       );
       Get.until((route) => route.isFirst);
+      return true;
     } catch (err) {
-      Get.snackbar(
-        'Login failed',
-        'Invalid email or password',
-        backgroundColor: const Color(0xFF3A2016),
-        colorText: Colors.white,
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      if (!Get.testMode) {
+        Get.snackbar(
+          'Login failed',
+          'Invalid email or password',
+          backgroundColor: const Color(0xFF3A2016),
+          colorText: Colors.white,
+          snackPosition: SnackPosition.BOTTOM,
+        );
+      }
+      return false;
     }
   }
 

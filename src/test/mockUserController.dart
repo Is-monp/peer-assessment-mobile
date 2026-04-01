@@ -6,7 +6,7 @@ class FakeAuthRepository extends IAuthRepository {
   @override
   Future<void> login(String email, String password) async {
     if (email != "a@a.com" || password != "123456") {
-      throw Exception("error");
+      throw Exception("Invalid email or password");
     }
   }
 
