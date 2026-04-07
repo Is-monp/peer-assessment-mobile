@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:src/features/auth/domain/models/authentication_user.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:integration_test/integration_test.dart'; 
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:mockito/mockito.dart';
@@ -27,6 +28,7 @@ class _IsAUri extends Matcher {
 }
 const Matcher isAUri = _IsAUri();
 
+
 class MockHttpClient extends Mock implements http.Client {
   @override
   Future<http.Response> get(Uri? url, {Map<String, String>? headers}) =>
@@ -36,6 +38,7 @@ class MockHttpClient extends Mock implements http.Client {
         returnValueForMissingStub: Future.value(http.Response('[]', 200)),
       );
 }
+
 
 class FakeLocalPreferences implements ILocalPreferences {
   final Map<String, String> _storage = {
@@ -57,6 +60,7 @@ class FakeLocalPreferences implements ILocalPreferences {
   @override Future<void> setStringList(String key, List<String> value) async {}
 }
 
+
 class FakeAuthenticationSource implements IAuthenticationSource {
   @override
   Future<void> login(String email, String password) async {}
@@ -73,7 +77,7 @@ class FakeAuthenticationSource implements IAuthenticationSource {
   @override
   Future<bool> resetPassword(String email, String newPassword, String validationCode) async => true;
   @override
-  Future<bool> verifyToken() async => true; 
+  Future<bool> verifyToken() async => true;
   @override
   Future<AuthenticationUser> getLoggedUser() async =>
       AuthenticationUser(id: 'prof-1', email: 'prof@test.com', name: 'Josh Doe', student: false);
@@ -81,32 +85,43 @@ class FakeAuthenticationSource implements IAuthenticationSource {
   Future<List<AuthenticationUser>> getUsers() async => [];
 }
 
+
 void main() {
+
+  IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+
   late MockHttpClient mockHttpClient;
 
   setUpAll(() async {
-    TestWidgetsFlutterBinding.ensureInitialized();
     await dotenv.load(fileName: '.env');
   });
 
   setUp(() {
     mockHttpClient = MockHttpClient();
 
+    // Dependencias reales, solo el http.Client es mock
     Get.put<ILocalPreferences>(FakeLocalPreferences());
     Get.put<http.Client>(mockHttpClient, tag: 'apiClient', permanent: true);
     Get.put<IAuthenticationSource>(FakeAuthenticationSource());
     Get.put<IAuthRepository>(AuthRepository(Get.find()));
     Get.put(UserController(Get.find()));
 
+    // DataSource REAL (RemoteHomeProfessorDataSource)
     Get.lazyPut<HomeProfessorDataSource>(
       () => RemoteHomeProfessorDataSource(
         Get.find<http.Client>(tag: 'apiClient'),
       ),
     );
+
+    // Repositorio REAL (HomeProfessorRepositoryImpl)
     Get.lazyPut<HomeProfessorRepository>(
       () => HomeProfessorRepositoryImpl(Get.find()),
     );
+
+    // Use case REAL
     Get.lazyPut(() => GetAssignedCourses(Get.find()));
+
+    // Controlador REAL
     Get.lazyPut(() => HomeProfessorController(
       getAssignedCourses: Get.find(),
     ));
@@ -114,48 +129,54 @@ void main() {
 
   tearDown(() => Get.reset());
 
-  group('HomeProfessorPage — Widget Test con HTTP mock', () {
-    testWidgets('Muestra los cursos del profesor desde respuesta HTTP simulada',
-        (WidgetTester tester) async {
+  group('HomeProfessorPage — Integration Test con HTTP mock', () {
+    testWidgets(
+      'Muestra los cursos del profesor desde respuesta HTTP simulada',
+      (WidgetTester tester) async {
 
-      final coursesJson = jsonEncode([
-        {
-          '_id': 'course-1',
-          'code': 'CS101',
-          'name': 'Software Design',
-          'period': '2024-10',
-          'studentsCount': 30,
-          'activeEvaluations': 2,
-        },
-        {
-          '_id': 'course-2',
-          'code': 'CS201',
-          'name': 'Data Structures',
-          'period': '2024-10',
-          'studentsCount': 25,
-          'activeEvaluations': 1,
-        },
-      ]);
+        
+        final coursesJson = jsonEncode([
+          {
+            '_id': 'course-1',
+            'code': 'CS101',
+            'name': 'Software Design',
+            'period': '2024-10',
+            'studentsCount': 30,
+            'activeEvaluations': 2,
+          },
+          {
+            '_id': 'course-2',
+            'code': 'CS201',
+            'name': 'Data Structures',
+            'period': '2024-10',
+            'studentsCount': 25,
+            'activeEvaluations': 1,
+          },
+        ]);
 
-      when(mockHttpClient.get(
-        argThat(isAUri),
-        headers: anyNamed('headers'),
-      )).thenAnswer((_) async => http.Response(coursesJson, 200));
+       
+        when(mockHttpClient.get(
+          argThat(isAUri),
+          headers: anyNamed('headers'),
+        )).thenAnswer((_) async => http.Response(coursesJson, 200));
 
-      await tester.pumpWidget(const GetMaterialApp(
-        home: HomeProfessorPage(),
-      ));
+     
+        await tester.pumpWidget(const GetMaterialApp(
+          home: HomeProfessorPage(),
+        ));
 
-      await tester.pumpAndSettle();
+     
+        await tester.pumpAndSettle();
 
-      expect(find.text('Software Design'), findsOneWidget);
-      expect(find.text('Data Structures'), findsOneWidget);
-      expect(find.text('2 total'), findsOneWidget);
+        expect(find.text('Software Design'), findsOneWidget);
+        expect(find.text('Data Structures'), findsOneWidget);
+        expect(find.text('2 total'), findsOneWidget);
 
-      verify(mockHttpClient.get(
-        argThat(isAUri),
-        headers: anyNamed('headers'),
-      )).called(1);
-    });
+        verify(mockHttpClient.get(
+          argThat(isAUri),
+          headers: anyNamed('headers'),
+        )).called(1);
+      },
+    );
   });
 }
