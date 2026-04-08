@@ -52,9 +52,7 @@ class HomePage extends StatelessWidget {
                       SizedBox(
                         width: double.infinity,
                         child: ButtonHome(
-                          onPressed: () => Get.to(
-                            () => const LoginPage(key: Key('LoginPage')),
-                          ),
+                          onPressed: () => Get.to(() => const LoginPage()),
                           text: 'Log in',
                         ),
                       ),
@@ -62,9 +60,7 @@ class HomePage extends StatelessWidget {
                       SizedBox(
                         width: double.infinity,
                         child: ButtonHome(
-                          onPressed: () => Get.to(
-                            () => const SignupPage(key: Key('SignupPage')),
-                          ),
+                          onPressed: () => Get.to(() => const SignupPage()),
                           text: 'Sign in',
                         ),
                       ),
