@@ -23,9 +23,8 @@ class TapCourseRepositoryImpl implements TapCourseRepository {
   }
 
   @override
-  Future<List<GroupCategory>> importGroupsFromCsv(String csvContent, String courseId) async {
+  Future<List<GroupCategory>> importGroupsFromCsv(String csvContent, String courseId) async { 
     final models = await datasource.importGroupsFromCsv(csvContent, courseId);
     return models.map((m) => m.toEntity()).toList();
   }
-
 }

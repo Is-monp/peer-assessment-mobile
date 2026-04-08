@@ -301,20 +301,11 @@ class _EvaluationsTab extends StatelessWidget {
       return ListView.builder(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         itemCount: controller.evaluations.length,
-        itemBuilder: (_, i) {
-          final eval = controller.evaluations[i];
-          final isStudent = !controller.isProfessor;
-          final submitted = controller.isSubmitted(eval.id);
-          return CourseEvaluationCard(
-            evaluation: eval,
-            onEvaluate: (isStudent && !submitted && eval.status == 'active')
-                ? () => controller.onEvaluateTapped(eval)
-                : null,
-            onViewResults: isStudent
-                ? () => controller.onViewResultsTapped(eval)
-                : null,
-          );
-        },
+        itemBuilder: (_, i) => CourseEvaluationCard(
+          evaluation: controller.evaluations[i],
+          onEvaluate: controller.isProfessor ? null : () => controller.onEvaluateTapped(controller.evaluations[i]),
+          onViewResults: controller.isProfessor ? null : () => controller.onViewResultsTapped(controller.evaluations[i]),
+        ),
       );
     });
   }

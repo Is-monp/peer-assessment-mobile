@@ -61,9 +61,9 @@ class CourseEvaluationCard extends StatelessWidget {
             const Divider(color: Colors.white12, height: 1),
             const SizedBox(height: 12),
             GestureDetector(
-              onTap: onEvaluate ?? onViewResults,
+              onTap: isActive ? onEvaluate : onViewResults,
               child: Text(
-                onEvaluate != null ? 'Evaluate now →' : 'View results →',
+                isActive ? 'Evaluate now →' : 'View results →',
                 style: GoogleFonts.inter(
                   color: const Color(0xFFFF8C60),
                   fontSize: 13,

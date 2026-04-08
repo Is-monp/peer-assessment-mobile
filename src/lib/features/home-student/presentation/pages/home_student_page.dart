@@ -27,11 +27,7 @@ class HomeStudentPage extends StatelessWidget {
             child: CircularProgressIndicator(color: Color(0xFFBB3322)),
           );
         }
-        return RefreshIndicator(
-          color: const Color(0xFFBB3322),
-          backgroundColor: const Color(0xFF15100E),
-          onRefresh: controller.refreshData,
-          child: SingleChildScrollView(
+        return SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,7 +44,6 @@ class HomeStudentPage extends StatelessWidget {
               _MyCoursesSection(controller: controller),
               const SizedBox(height: 24),
             ],
-          ),
           ),
         );
       }),
