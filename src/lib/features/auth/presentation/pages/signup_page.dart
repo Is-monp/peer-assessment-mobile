@@ -8,7 +8,8 @@ import 'package:src/features/auth/presentation/viewmodels/user_controller.dart';
 import 'package:src/features/auth/presentation/widgets/text_box.dart';
 
 class SignupPage extends StatefulWidget {
-  const SignupPage({super.key});
+  final bool showBackground;
+  const SignupPage({super.key, this.showBackground = true});
 
   @override
   State<SignupPage> createState() => _SignupPageState();
@@ -19,6 +20,7 @@ class _SignupPageState extends State<SignupPage> {
   //final _validationKey = GlobalKey<FormState>();
 
   final userController = Get.find<UserController>();
+  final _formKey = GlobalKey<FormState>();
 
   final nameController = TextEditingController();
   final emailController = TextEditingController();
@@ -76,12 +78,14 @@ class _SignupPageState extends State<SignupPage> {
       body: Stack(
         children: [
           Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/images/background.jpg'),
-                fit: BoxFit.cover,
-              ),
-            ),
+            decoration: widget.showBackground
+                ? const BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage('images/background.jpg'),
+                      fit: BoxFit.cover,
+                    ),
+                  )
+                : null,
           ),
           BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
@@ -95,58 +99,95 @@ class _SignupPageState extends State<SignupPage> {
             child: SingleChildScrollView(
               child: SizedBox(
                 width: 450,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Signup",
-                      style: GoogleFonts.madimiOne(
-                        fontSize: 50,
-                        color: Colors.white,
-                      ),
-                    ),
-                    Text(
-                      "Create your account",
-                      style: GoogleFonts.inter(
-                        fontSize: 15,
-                        color: Colors.white70,
-                      ),
-                    ),
-                    SizedBox(height: 20),
-
-                    TextBox(hintText: 'Name', controller: nameController),
-                    SizedBox(height: 20),
-                    TextBox(hintText: 'Email', controller: emailController),
-                    SizedBox(height: 20),
-                    TextBox(
-                      hintText: 'Password',
-                      controller: passwordController,
-                      obscureText: true,
-                    ),
-
-                    SizedBox(height: 20),
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.black.withValues(alpha: 0.7),
-                          foregroundColor: Colors.white,
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Signup",
+                        style: GoogleFonts.madimiOne(
+                          fontSize: 50,
+                          color: Colors.white,
                         ),
-                        onPressed: () {
-                          _signup(
-                            nameController.text,
-                            emailController.text.trim(),
-                            passwordController.text,
-                            true,
-                          );
+                      ),
+                      Text(
+                        "Create your account",
+                        style: GoogleFonts.inter(
+                          fontSize: 15,
+                          color: Colors.white70,
+                        ),
+                      ),
+                      SizedBox(height: 20),
+
+                      TextBox(
+                        key: const Key('TextFormFieldSignupName'),
+                        hintText: 'Name',
+                        controller: nameController,
+                        validatorFunc: () => (value) {
+                          if (value!.isEmpty) {
+                            return "Enter name";
+                          }
                         },
-                        child: Text(
-                          'Test Login',
-                          style: GoogleFonts.madimiOne(fontSize: 20),
+                      ),
+                      SizedBox(height: 20),
+                      TextBox(
+                        key: const Key('TextFormFieldSignupEmail'),
+                        hintText: 'Email',
+                        controller: emailController,
+                        validatorFunc: () => (value) {
+                          if (value!.isEmpty) {
+                            return "Enter email";
+                          } else if (!value.contains('@')) {
+                            return "Enter valid email address";
+                          }
+                        },
+                      ),
+                      SizedBox(height: 20),
+                      TextBox(
+                        key: const Key('TextFormFieldSignupPassword'),
+                        hintText: 'Password',
+                        controller: passwordController,
+                        obscureText: true,
+                        validatorFunc: () => (value) {
+                          if (value!.isEmpty) {
+                            return "Enter password";
+                          } else if (value.length < 8) {
+                            return "Password should have at least 8 characters";
+                          }
+                          return null;
+                        },
+                      ),
+
+                      SizedBox(height: 20),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          key: const Key('ButtonSignupSubmit'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.black.withValues(
+                              alpha: 0.7,
+                            ),
+                            foregroundColor: Colors.white,
+                          ),
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              _signup(
+                                nameController.text,
+                                emailController.text.trim(),
+                                passwordController.text,
+                                true,
+                              );
+                            }
+                          },
+                          child: Text(
+                            'Sign up',
+                            style: GoogleFonts.madimiOne(fontSize: 20),
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
