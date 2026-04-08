@@ -7,6 +7,8 @@ class Evaluation {
   final String courseName;
   final EvaluationStatus status;
   final String timeRemaining;
+  final String groupCategory;
+  final DateTime deadline;
 
   const Evaluation({
     required this.id,
@@ -15,5 +17,7 @@ class Evaluation {
     required this.courseName,
     required this.status,
     required this.timeRemaining,
+    required this.groupCategory,
+    required this.deadline,
   });
 }

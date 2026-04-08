@@ -8,6 +8,8 @@ class EvaluationModel extends Evaluation {
     required super.courseName,
     required super.status,
     required super.timeRemaining,
+    required super.groupCategory,
+    required super.deadline,
   });
 
   factory EvaluationModel.fromDbJson(
@@ -20,8 +22,12 @@ class EvaluationModel extends Evaluation {
       courseCode: courseJson['code'] as String? ?? '---',
       title: evalJson['name'] as String,
       courseName: courseJson['name'] as String? ?? '---',
-      status: EvaluationStatus.open,
+      status: deadline.isAfter(DateTime.now())
+          ? EvaluationStatus.open
+          : EvaluationStatus.closed,
       timeRemaining: _computeTimeRemaining(deadline),
+      groupCategory: evalJson['group_category'] as String,
+      deadline: deadline,
     );
   }
 

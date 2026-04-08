@@ -9,8 +9,8 @@ class HomeStudentRepositoryImpl implements HomeStudentRepository {
   HomeStudentRepositoryImpl(this.dataSource);
 
   @override
-  Future<List<EvaluationModel>> getActiveEvaluations(String studentId) {
-    return dataSource.getActiveEvaluations(studentId);
+  Future<List<EvaluationModel>> getActiveEvaluations(String studentId, Set<String> submittedIds) {
+    return dataSource.getActiveEvaluations(studentId, submittedIds);
   }
 
   @override
