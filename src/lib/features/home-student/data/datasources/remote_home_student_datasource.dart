@@ -16,6 +16,11 @@ class RemoteHomeStudentDataSource implements HomeStudentDataSource {
   static const String _enrolledCoursesCachePrefix = 'enrolled_courses_cache';
   static const String _enrolledCoursesCacheTsPrefix =
       'enrolled_courses_cache_ts';
+  static const int _activeEvaluationsTtlMs = 10 * 60 * 1000;
+  static const String _activeEvaluationsCachePrefix =
+      'active_evaluations_cache';
+  static const String _activeEvaluationsCacheTsPrefix =
+      'active_evaluations_cache_ts';
 
   final String contract = dotenv.get(
     'EXPO_PUBLIC_ROBLE_PROJECT_ID',
@@ -184,6 +189,15 @@ class RemoteHomeStudentDataSource implements HomeStudentDataSource {
     String studentEmail,
   ) async {
     final ILocalPreferences prefs = Get.find();
+
+    final cachedEvaluations = await _getCachedActiveEvaluations(
+      prefs,
+      studentEmail,
+    );
+    if (cachedEvaluations != null) {
+      return cachedEvaluations;
+    }
+
     final token = await prefs.getString('token');
     final headers = {'Authorization': 'Bearer $token'};
 
@@ -227,6 +241,7 @@ class RemoteHomeStudentDataSource implements HomeStudentDataSource {
 
     // For each course, fetch active evaluations and course info
     final List<EvaluationModel> result = [];
+    final List<Map<String, dynamic>> evaluationsRaw = [];
     for (final courseId in courseIds) {
       final evalsUri = Uri.https(baseUrl, '/database/$contract/read', {
         'tableName': 'evaluations',
@@ -257,10 +272,72 @@ class RemoteHomeStudentDataSource implements HomeStudentDataSource {
 
       for (final eval in stillActive) {
         result.add(EvaluationModel.fromDbJson(eval, courseJson));
+        evaluationsRaw.add({
+          'eval': Map<String, dynamic>.from(eval),
+          'course': Map<String, dynamic>.from(courseJson),
+        });
       }
     }
 
+    if (evaluationsRaw.isNotEmpty) {
+      await _setCachedActiveEvaluations(prefs, studentEmail, evaluationsRaw);
+    }
+
     return result;
+  }
+
+  Future<List<EvaluationModel>?> _getCachedActiveEvaluations(
+    ILocalPreferences prefs,
+    String studentEmail,
+  ) async {
+    final cacheKey = '${_activeEvaluationsCachePrefix}_$studentEmail';
+    final cacheTsKey = '${_activeEvaluationsCacheTsPrefix}_$studentEmail';
+    final cachedPayload = await prefs.getString(cacheKey);
+    final cacheTimestamp = await prefs.getInt(cacheTsKey);
+
+    if (cachedPayload == null || cacheTimestamp == null) {
+      return null;
+    }
+
+    final isExpired =
+        DateTime.now().millisecondsSinceEpoch - cacheTimestamp >
+        _activeEvaluationsTtlMs;
+    if (isExpired) {
+      return null;
+    }
+
+    try {
+      final List<dynamic> decoded = jsonDecode(cachedPayload);
+      final List<EvaluationModel> cached = [];
+
+      for (final item in decoded) {
+        final json = Map<String, dynamic>.from(item as Map);
+        final evalJson = Map<String, dynamic>.from(json['eval'] as Map);
+        final courseJson = Map<String, dynamic>.from(json['course'] as Map);
+        cached.add(EvaluationModel.fromDbJson(evalJson, courseJson));
+      }
+
+      return cached;
+    } catch (e) {
+      logError('getActiveEvaluations cache decode error: $e');
+      return null;
+    }
+  }
+
+  Future<void> _setCachedActiveEvaluations(
+    ILocalPreferences prefs,
+    String studentEmail,
+    List<Map<String, dynamic>> payload,
+  ) async {
+    final cacheKey = '${_activeEvaluationsCachePrefix}_$studentEmail';
+    final cacheTsKey = '${_activeEvaluationsCacheTsPrefix}_$studentEmail';
+
+    try {
+      await prefs.setString(cacheKey, jsonEncode(payload));
+      await prefs.setInt(cacheTsKey, DateTime.now().millisecondsSinceEpoch);
+    } catch (e) {
+      logError('getActiveEvaluations cache store error: $e');
+    }
   }
 
   Future<void> _closeExpiredEvaluations(
