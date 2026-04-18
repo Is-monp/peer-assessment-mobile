@@ -23,7 +23,7 @@ import 'package:src/features/home-student/data/datasources/remote_home_student_d
 import 'package:src/features/home-student/data/repositories/home_student_repository_impl.dart';
 import 'package:src/features/home-student/domain/repositories/home_student_repository.dart';
 import 'central.dart';
-
+//diosmio
 void main() async {
   await dotenv.load(fileName: ".env");
   Loggy.initLoggy(logPrinter: const PrettyPrinter(showColors: true));
